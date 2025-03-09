@@ -18,7 +18,7 @@ const Adventure = () => {
     return (
         <div className="p-6 md:p-12  text-white">
             {/* Hero Section */}
-            <div className="relative h-60  flex items-center justify-center bg-cover bg-center text-white text-2xl font-bold"
+            <div className="relative h-60  flex items-center justify-center bg-cover bg-center text-[#833d47] text-2xl font-bold"
                 style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?camping,adventure')" }}>
                 <div className="bg-[#90c63e] bg-opacity-50 p-6 rounded-xl">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-center">Adventure & Travel Vlogs</h1>
@@ -28,7 +28,7 @@ const Adventure = () => {
 
             {/* Video Blog Section */}
             <div className="mt-12">
-                <h2 className="text-3xl font-bold text-center mb-6">Featured Adventure Videos</h2>
+                <h2 className="text-3xl font-bold text-center mb-6 text-[#833d47] ">Featured Adventure Videos</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                     {videos.map(video => (
                         <div key={video.id} className="relative group">
@@ -38,7 +38,7 @@ const Adventure = () => {
                                 title={video.title}
                                 allowFullScreen
                             ></iframe>
-                            <p className="text-center text-lg mt-2">{video.title}</p>
+                            <p className="text-center text-lg text-[#833d47] mt-2">{video.title}</p>
                         </div>
                     ))}
                 </div>
@@ -46,10 +46,10 @@ const Adventure = () => {
 
             {/* Testimonials Section */}
             <div className="mt-12">
-                <h2 className="text-3xl font-bold text-center mb-6">What Our Customers Say</h2>
+                <h2 className="text-3xl font-bold text-center mb-6 text-[#833d47]">What Our Customers Say</h2>
                 <div className="flex flex-col md:flex-row gap-6 justify-center">
                     {testimonials.map(testimonial => (
-                        <div key={testimonial.id} className="p-6 bg-white text-black shadow-md rounded-lg text-center w-full md:w-1/3">
+                        <div key={testimonial.id} className="p-6 bg-white text-[#833d47] shadow-md rounded-lg text-center w-full md:w-1/3">
                             <p className="text-gray-700 italic">"{testimonial.text}"</p>
                             <h3 className="text-xl font-semibold mt-2">{testimonial.name}</h3>
                         </div>
