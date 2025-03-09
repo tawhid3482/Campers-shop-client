@@ -16,7 +16,7 @@ const Adventure = () => {
 
 
     return (
-        <div className="p-6 md:p-12  text-white">
+        <div className="p-6 md:p-8  text-white">
             {/* Hero Section */}
             <div className="relative h-60  flex items-center justify-center bg-cover bg-center text-[#833d47] text-2xl font-bold"
                 style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?camping,adventure')" }}>

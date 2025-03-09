@@ -29,7 +29,7 @@ const featuredProducts = [
 
 const FeaturedProducts = () => {
   return (
-    <section className="py-10 bg-white">
+    <section className="py-10  ">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-[#6B2D38] mb-6">Featured Products</h2>
 

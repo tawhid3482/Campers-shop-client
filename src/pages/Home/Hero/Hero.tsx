@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-screen flex items-center justify-center bg-gradient-to-r from-[#90c63e] to-[#a07178] text-white">
+    <div className="relative w-full h-[550px] flex items-center justify-center bg-gradient-to-r from-[#90c63e] to-[#a07178] text-white">
       {/* Background Overlay */}
       <div
         className="absolute inset-0 bg-black bg-opacity-30"

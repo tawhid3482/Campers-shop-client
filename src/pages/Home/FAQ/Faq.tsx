@@ -19,7 +19,7 @@ const FAQ = () => {
     return (
         <div className="p-6 md:p-12  text-white">
             <h2 className="text-3xl font-bold text-center mb-6 text-[#833d47]">Frequently Asked Questions</h2>
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl md:max-w-7xl mx-auto space-y-4">
                 {faqs.map((faq, index) => (
                     <div key={index} className="bg-white text-[#833d47] rounded-lg shadow-md">
                         <button
