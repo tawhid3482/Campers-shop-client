@@ -1,3 +1,4 @@
+import Adventure from "./AdventureVlog&Video/Adventure";
 import Category from "./Categories/Category";
 import FeaturedProducts from "./FeaturedProduct/FreaturedProduct";
 import Hero from "./Hero/Hero";
@@ -10,6 +11,7 @@ const Home = () => {
            <ReProducts></ReProducts>
            <Category></Category>
            <FeaturedProducts></FeaturedProducts>
+           <Adventure></Adventure>
         </div>
     );
 };
