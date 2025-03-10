@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FieldValues, useForm } from "react-hook-form"; // Import useForm
 import CamperForm from "../Components/form/CamperForm";
 import FormInput from "../Components/form/FormInput";
+import { useNavigate } from "react-router";
+// import { useAppDispatch } from "../redux/features/hook";
+import { useCreateUserMutation } from "../redux/features/user/userApi";
+import { toast } from "sonner";
 
 type TUserProps = {
   name: string;
@@ -15,6 +20,11 @@ type TUserProps = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [createUser] = useCreateUserMutation();
+  console.log(createUser);
+
   const {
     control,
     formState: { errors },
@@ -23,7 +33,31 @@ const Register = () => {
 
   // Handle the form submission and pass the form data to this function
   const onSubmit = async (data: FieldValues) => {
-    console.log(data); // Data will contain the form fields and their values
+    console.log(data);
+    const toastId = toast.loading("register in");
+
+    try {
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone,
+        address: data.address
+        ? {
+            street: data.address.street,
+            city: data.address.city,
+            zip: data.address.zip,
+          }
+        : undefined, // Avoid errors if address is missing
+      };
+      console.log( userInfo);
+      const res = await createUser(userInfo).unwrap();
+      console.log("res", res);
+      toast.success("register in", { id: toastId, duration: 2000 });
+      navigate(`/`);
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
 
   return (
