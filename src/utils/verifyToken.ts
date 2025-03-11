@@ -1,4 +1,11 @@
 import { jwtDecode } from "jwt-decode";
-export const verifyToken = (token: string) => {
-  return jwtDecode(token);
+
+interface DecodedUser {
+  role: string;
+  exp?: number; // Token expiration timestamp (optional)
+  iat?: number; // Issued at timestamp (optional)
+}
+
+export const verifyToken = (token: string): DecodedUser => {
+  return jwtDecode<DecodedUser>(token);
 };
