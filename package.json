@@ -15,6 +15,7 @@
     "@types/redux-persist": "^4.0.0",
     "antd": "^5.24.3",
     "framer-motion": "^12.4.10",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.477.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/jwt-decode": "^2.2.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",

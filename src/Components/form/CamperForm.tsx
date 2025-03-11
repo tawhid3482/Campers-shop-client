@@ -3,15 +3,15 @@ import { FormProvider, useForm } from "react-hook-form";
 
 type TCamperFormProps = {
   children: React.ReactNode;
-  onsubmit: (data: any) => Promise<void>;
+  onSubmit: (data: any) => Promise<void>;
 };
 
-const CamperForm = ({ children, onsubmit }: TCamperFormProps) => {
+const CamperForm = ({ children, onSubmit }: TCamperFormProps) => {
   const methods = useForm(); // React Hook Form instance
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit((data) => onsubmit(data))}>
+      <form onSubmit={methods.handleSubmit((data) => onSubmit(data))}>
         {children}
       </form>
     </FormProvider>
