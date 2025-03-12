@@ -1,142 +1,135 @@
 import { useState } from "react";
 import { Menu, X, ShoppingCart, Heart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.gif";
+import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const user = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
+  const location = useLocation(); // Get current route
+
+  // Navigation items
+  const navItems = ["Home", "Shop", "About", "Contact"];
 
   return (
-    <nav className="bg-[#90c63e]  p-4">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-[#90c63e] p-4 text-white">
+      <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex justify-center items-center gap-2">
-          <img src={logo} className="w-10 md:w-16 bg-[90c63e]" alt="" />
-          <Link to="/" className="text-sm md:text-2xl font-bold">
+        <div className="flex items-center gap-2">
+          <img src={logo} className="w-10 md:w-14" alt="Logo" />
+          <Link to="/" className="text-lg md:text-xl font-bold">
             Campers Shop
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex md:items-center md:justify-center md:space-x-6">
-          <li>
-            <Link
-              to="/"
-              className="px-4 py-2 hover:bg-[#833d47] hover:text-white rounded"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/shop"
-              className="px-4 py-2 hover:bg-[#833d47] hover:text-white rounded"
-            >
-              Shop
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/about"
-              className="px-4 py-2 hover:bg-[#833d47] hover:text-white rounded"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/contact"
-              className="px-4 py-2 hover:bg-[#833d47] hover:text-white rounded"
-            >
-              Contact
-            </Link>
-          </li>
+        <ul className="hidden md:flex items-center space-x-4 md:space-x-6 lg:space-x-8">
+          {navItems.map((item) => {
+            const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+            const isActive = location.pathname === path; // Check if active
+
+            return (
+              <li key={item}>
+                <Link
+                  to={path}
+                  className={`px-4 py-2 rounded transition duration-200 ${
+                    isActive
+                      ? "bg-[#833d47] text-white"
+                      : "hover:bg-[#833d47] hover:text-white"
+                  }`}
+                >
+                  {item}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* Icons */}
-        <div className="flex items-center space-x-4">
+        {/* Icons and Authentication */}
+        <div className="flex items-center space-x-2 md:space-x-4 lg:space-x-6">
           <Link
             to="/wishlist"
-            className="hover:bg-[#833d47] hover:text-white p-1 rounded-lg"
+            className={`hover:bg-[#833d47] p-1 rounded-lg ${
+              location.pathname === "/wishlist" ? "bg-[#833d47]" : ""
+            }`}
           >
-            <Heart size={24} />
+            <Heart size={22} />
           </Link>
           <Link
             to="/cart"
-            className="hover:bg-[#833d47] hover:text-white p-1 rounded-lg"
+            className={`hover:bg-[#833d47] p-1 rounded-lg ${
+              location.pathname === "/cart" ? "bg-[#833d47]" : ""
+            }`}
           >
-            <ShoppingCart size={24} />
+            <ShoppingCart size={22} />
           </Link>
 
+          {/* Login/Profile & Logout */}
+          <div className="hidden md:flex">
+            {user ? (
+              <div className="flex items-center space-x-3">
+                <Link
+                  to="/profile"
+                  className={`px-3 py-2 rounded ${
+                    location.pathname === "/profile"
+                      ? "bg-[#3b4927]"
+                      : "bg-[#3b4927] hover:bg-[#2d3820]"
+                  }`}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => dispatch(logout())}
+                  className="px-3 py-2 bg-[#833d47] hover:bg-[#692f38] text-white rounded"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className={`px-3 py-2 rounded ${
+                  location.pathname === "/login"
+                    ? "bg-[#833d47]"
+                    : "bg-[#833d47] hover:bg-[#3b4927]"
+                }`}
+              >
+                Login
+              </Link>
+            )}
+          </div>
+
           {/* Mobile Menu Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2">
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-
-          <div className="">
-            <Link
-              to="/login"
-              className="px-4 py-2  bg-[#833d47] hover:bg-[#3b4927] text-white rounded"
-            >
-              Login
-            </Link>
-          </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-[#692f38]  text-white py-2 my-2">
+        <div className="md:hidden bg-[#692f38] text-white py-3">
           <ul className="flex flex-col items-center space-y-4">
-            <li>
-              <Link
-                to="/"
-                className="block px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/shop"
-                className="block px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                Shop
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/about"
-                className="block px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact"
-                className="block px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/wishlist"
-                className="flex items-center space-x-2 px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                <Heart size={20} />
-                <span>Wishlist</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/cart"
-                className="flex items-center space-x-2 px-4 py-2 hover:bg-[#90c63e] rounded"
-              >
-                <ShoppingCart size={20} />
-                <span>Cart</span>
-              </Link>
-            </li>
+            {navItems.map((item) => {
+              const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              const isActive = location.pathname === path;
+
+              return (
+                <li key={item}>
+                  <Link
+                    to={path}
+                    className={`block px-4 py-2 rounded transition duration-200 ${
+                      isActive ? "bg-[#90c63e]" : "hover:bg-[#90c63e]"
+                    }`}
+                  >
+                    {item}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

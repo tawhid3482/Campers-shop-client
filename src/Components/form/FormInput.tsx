@@ -19,6 +19,7 @@ type TInputProps<T extends FieldValues> = {
   className?: string;
   rules?: object;
   error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  value?:string
 };
 
 const FormInput = <T extends FieldValues>({
@@ -30,6 +31,7 @@ const FormInput = <T extends FieldValues>({
   className,
   rules,
   error,
+  value
 }: TInputProps<T>) => {
   return (
     <div className="mb-4">
@@ -46,6 +48,7 @@ const FormInput = <T extends FieldValues>({
             {...field}
             id={name as string}
             type={type}
+            value={value}
             className={`border p-2 rounded w-full ${className} ${
               error ? "border-red-500" : ""
             }`}
