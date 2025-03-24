@@ -1,14 +1,40 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetAllProductsQuery } from "../../redux/features/products/productsApi";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectItem } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
+// import { useGetAllProductsQuery } from "../../redux/features/products/productsApi";
 
 const Shop = () => {
-  const { data: products } = useGetAllProductsQuery(undefined);
+  const products = [
+    {
+      id: 1,
+      name: "Camping Tent",
+      price: 120,
+      img: "https://media.gettyimages.com/id/142533334/photo/yellow-dome-tent-with-open-zip-enclosure.jpg?s=612x612&w=gi&k=20&c=DppLRA2cr7SKvArCFx_9wKXqSPBZWKflFz2KlhUipLA=",
+      category: "tours",
+    },
+    {
+      id: 2,
+      name: "Backpacking Stove",
+      price: 45,
+      img: "https://cdn.shopify.com/s/files/1/0589/1512/7436/products/KoveaExpedition_900x.jpg?v=1650601086",
+      category: "tours",
+    },
+    {
+      id: 3,
+      name: "Sleeping Bag",
+      price: 85,
+      img: "https://rukminim2.flixcart.com/image/850/1000/ku04o7k0/sleeping-bag/h/m/e/190-190-cm-x-80-cm-best-quality-sleeping-bags-in-rectangular-original-imag782gm6abrcp2.jpeg?q=90&crop=false",
+      category: "tours",
+    },
+    {
+      id: 4,
+      name: "Hiking Backpack",
+      price: 99,
+      img: "https://media.istockphoto.com/id/840113534/photo/backpacks-in-the-mountains-overlooking-the-mountains-on-the-green-grass.jpg?s=612x612&w=0&k=20&c=SWxOHCHorlqRO2EC--drexExy4UpEbYIX7U_6Vn_AdA=",
+      category: "tours",
+    },
+  ];
+
+  // const { data: products } = useGetAllProductsQuery(undefined);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -16,10 +42,8 @@ const Shop = () => {
 
   // Filtered products based on search, category, and price range
   const filteredProducts = products
-    ?.filter(
-      (product) =>
-        product.name.toLowerCase().includes(search.toLowerCase()) ||
-        product.description.toLowerCase().includes(search.toLowerCase())
+    ?.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
     )
     .filter((product) => (category ? product.category === category : true))
     .filter(

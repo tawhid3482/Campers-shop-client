@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Sample Data (Replace with API call)
 const sampleProducts = [
@@ -32,10 +32,7 @@ const sampleProducts = [
 const ReProducts = () => {
   const [products, ] = useState(sampleProducts);
 
-  // Fetch products from API (Optional)
-  useEffect(() => {
-    // Example: fetch("/api/recommended-products").then(res => res.json()).then(data => setProducts(data));
-  }, []);
+
 
   return (
     <div className="container mx-auto py-10 px-4">
