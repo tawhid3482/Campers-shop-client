@@ -11,34 +11,11 @@ import {
 import { Slider } from "@/Components/ui/slider";
 import { Card, CardContent } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
+import { useGetAllProductsQuery } from "@/redux/features/products/productsApi";
 
 const Shop = () => {
-  const products = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "Camping Tent",
-        price: 120,
-        img: "https://media.gettyimages.com/id/142533334/photo/yellow-dome-tent-with-open-zip-enclosure.jpg?s=612x612&w=gi&k=20&c=DppLRA2cr7SKvArCFx_9wKXqSPBZWKflFz2KlhUipLA=",
-        category: "outdoor",
-      },
-      {
-        id: 2,
-        name: "Backpacking Stove",
-        price: 45,
-        img: "https://cdn.shopify.com/s/files/1/0589/1512/7436/products/KoveaExpedition_900x.jpg?v=1650601086",
-        category: "tours",
-      },
-      {
-        id: 3,
-        name: "Sleeping Bag",
-        price: 85,
-        img: "https://rukminim2.flixcart.com/image/850/1000/ku04o7k0/sleeping-bag/h/m/e/190-190-cm-x-80-cm-best-quality-sleeping-bags-in-rectangular-original-imag782gm6abrcp2.jpeg?q=90&crop=false",
-        category: "tours",
-      },
-    ],
-    []
-  );
+  const { data } = useGetAllProductsQuery(undefined);
+  const products = useMemo(() => data?.data || [], [data]); // Fix API response access
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -51,7 +28,7 @@ const Shop = () => {
         product.name.toLowerCase().includes(search.toLowerCase())
       )
       .filter((product) =>
-        category !== "all" ? product.category === category : true
+        category !== "all" ? product.category._id === category : true
       )
       .filter(
         (product) =>
@@ -78,10 +55,8 @@ const Shop = () => {
         />
 
         {/* Price Range Filter */}
-        <div className="">
-          <label className="block text-sm font-semibold mb-1">
-            Price Range
-          </label>
+        <div>
+          <label className="block text-sm font-semibold mb-1">Price Range</label>
           <Slider
             min={0}
             max={1000}
@@ -100,10 +75,16 @@ const Shop = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="tours">Tours</SelectItem>
-            <SelectItem value="electronics">Electronics</SelectItem>
-            <SelectItem value="clothing">Clothing</SelectItem>
-            <SelectItem value="outdoor">Outdoor</SelectItem>
+            {products
+              .map((p) => p.category)
+              .filter(
+                (v, i, self) => self.findIndex((c) => c._id === v._id) === i
+              ) // Remove duplicate categories
+              .map((c) => (
+                <SelectItem key={c._id} value={c._id}>
+                  {c.name}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
 
@@ -139,11 +120,11 @@ const Shop = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Card
-              key={product.id}
+              key={product._id}
               className="p-4 bg-white shadow-md rounded-lg transition-transform transform hover:scale-105"
             >
               <img
-                src={product.img}
+                src={product.image}
                 alt={product.name}
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
@@ -153,8 +134,8 @@ const Shop = () => {
                 </h3>
                 <p className="text-gray-600">${product.price}</p>
                 <Link
-                  to={`/product/${product.id}`}
-                  className="block mt-2 text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  to={`/product/${product._id}`}
+                  className="block mt-2 text-center bg-[#833d47] text-white py-2 rounded-lg hover:bg-[#90c63e] transition-colors"
                 >
                   View Details
                 </Link>

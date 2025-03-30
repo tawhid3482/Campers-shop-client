@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.gif";
 import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ const Navbar = () => {
   const location = useLocation(); // Get current route
 
   // Navigation items
-  const navItems = ["Home", "Shop", "About", "Contact"];
+  const navItems = ["home", "shop", "about", "contact"];
 
   return (
     <nav className="bg-[#90c63e] p-4 text-white">
@@ -28,12 +29,12 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <ul className="hidden md:flex items-center space-x-4 md:space-x-6 lg:space-x-8">
           {navItems.map((item) => {
-            const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+            const path = item === "home" ? "/" : `/${item.toLowerCase()}`;
             const isActive = location.pathname === path; // Check if active
 
             return (
               <li key={item}>
-                <Link
+                <NavLink
                   to={path}
                   className={`px-4 py-2 rounded transition duration-200 ${
                     isActive
@@ -42,7 +43,7 @@ const Navbar = () => {
                   }`}
                 >
                   {item}
-                </Link>
+                </NavLink>
               </li>
             );
           })}
@@ -114,19 +115,19 @@ const Navbar = () => {
         <div className="md:hidden bg-[#692f38] text-white py-3">
           <ul className="flex flex-col items-center space-y-4">
             {navItems.map((item) => {
-              const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+              const path = item === "home" ? "/" : `/${item.toLowerCase()}`;
               const isActive = location.pathname === path;
 
               return (
                 <li key={item}>
-                  <Link
+                  <NavLink
                     to={path}
                     className={`block px-4 py-2 rounded transition duration-200 ${
                       isActive ? "bg-[#90c63e]" : "hover:bg-[#90c63e]"
                     }`}
                   >
                     {item}
-                  </Link>
+                  </NavLink>
                 </li>
               );
             })}
