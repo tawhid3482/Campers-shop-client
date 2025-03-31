@@ -8,7 +8,7 @@ const ReProducts = () => {
   const products: TProduct[] = useMemo(() => {
     return (data?.data || [])
       .filter((product: TProduct) => product.productType === "bestSelling")
-      .slice(0, 6);
+      .slice(0, 8);
   }, [data]);
 
   return (
