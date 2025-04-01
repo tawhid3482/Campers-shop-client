@@ -36,7 +36,11 @@ const Shop = () => {
           product.price >= priceRange[0] && product.price <= priceRange[1]
       )
       .sort((a, b) =>
-        sortOrder === "asc" ? a.price - b.price : sortOrder === "desc" ? b.price - a.price : 0
+        sortOrder === "asc"
+          ? a.price - b.price
+          : sortOrder === "desc"
+          ? b.price - a.price
+          : 0
       );
   }, [products, search, category, priceRange, sortOrder]);
 
@@ -53,7 +57,9 @@ const Shop = () => {
 
         {/* Price Range Filter */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Price Range</label>
+          <label className="block text-sm font-semibold mb-1">
+            Price Range
+          </label>
           <Slider
             min={0}
             max={1000}
@@ -74,7 +80,10 @@ const Shop = () => {
             <SelectItem value="all">All Categories</SelectItem>
             {products
               .map((p) => p.category)
-              .filter((c, i, self) => c?._id && self.findIndex((v) => v?._id === c?._id) === i)
+              .filter(
+                (c, i, self) =>
+                  c?._id && self.findIndex((v) => v?._id === c?._id) === i
+              )
               .map((c) => (
                 <SelectItem key={c?._id} value={c?._id || ""}>
                   {c?.name}
@@ -84,7 +93,10 @@ const Shop = () => {
         </Select>
 
         {/* Sorting */}
-        <Select value={sortOrder} onValueChange={(value) => setSortOrder(value)}>
+        <Select
+          value={sortOrder}
+          onValueChange={(value) => setSortOrder(value)}
+        >
           <SelectTrigger className="border border-black p-3 rounded-md shadow-sm w-full lg:w-44">
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
@@ -124,10 +136,12 @@ const Shop = () => {
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
               <CardContent>
-                <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
+                <h3 className="text-lg font-bold text-gray-800">
+                  {product.name}
+                </h3>
                 <p className="text-gray-600">${product.price}</p>
                 <Link
-                  to={`/product/${product._id}`}
+                  to={`/products/${product._id}`}
                   className="block mt-2 text-center bg-[#833d47] text-white py-2 rounded-lg hover:bg-[#90c63e] transition-colors"
                 >
                   View Details

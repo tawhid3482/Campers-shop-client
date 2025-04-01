@@ -12,5 +12,5 @@ export type TProduct = {
   category: TCategory;
   image?: string;
   rating?: number;
-  productType:string
+  productType?:string
 };

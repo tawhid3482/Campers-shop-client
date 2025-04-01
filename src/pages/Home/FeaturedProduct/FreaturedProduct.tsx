@@ -11,7 +11,7 @@ const FeaturedProducts = () => {
     const products: TProduct[] = useMemo(() => {
       return (data?.data || [])
         .filter((product: TProduct) => product.productType === "featured")
-        .slice(0, 6);
+        .slice(0, 8);
     }, [data]);
   
 
