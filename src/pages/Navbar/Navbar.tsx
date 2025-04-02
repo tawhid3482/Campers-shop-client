@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Menu, X, ShoppingCart, Heart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.gif";
-import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { logout, useCurrentUser  } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/features/hook";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const user = useAppSelector(selectCurrentUser);
+  const user = useAppSelector(useCurrentUser);
+  // console.log(user)
   const dispatch = useAppDispatch();
   const location = useLocation(); // Get current route
 

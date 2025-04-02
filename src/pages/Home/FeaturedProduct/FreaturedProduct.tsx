@@ -36,7 +36,7 @@ const FeaturedProducts = () => {
               <p className="text-green-600 font-bold text-lg">${product.price.toFixed(2)}</p>
 
               <Link
-                to={`/product/${product._id}`}
+                to={`/products/${product._id}`}
                 className="block mt-3 text-center bg-[#90c63e] text-white  py-2 px-4 rounded-lg hover:bg-[#833d47] transition"
               >
                 View Details

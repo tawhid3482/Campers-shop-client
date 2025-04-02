@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FieldValues, useForm } from "react-hook-form"; // Import useForm
+import { FieldValues, useForm } from "react-hook-form"; 
 import CamperForm from "../Components/form/CamperForm";
 import FormInput from "../Components/form/FormInput";
 import { useNavigate } from "react-router";
-// import { useAppDispatch } from "../redux/features/hook";
 import { useCreateUserMutation } from "../redux/features/user/userApi";
 import { toast } from "sonner";
 
@@ -21,20 +19,16 @@ type TUserProps = {
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [createUser] = useCreateUserMutation();
-  console.log(createUser);
 
   const {
     control,
     formState: { errors },
-    handleSubmit, // Added handleSubmit to handle form submission
+    handleSubmit,
   } = useForm<TUserProps>();
 
-  // Handle the form submission and pass the form data to this function
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
-    const toastId = toast.loading("register in");
+    const toastId = toast.loading("Registering...");
 
     try {
       const userInfo = {
@@ -42,21 +36,17 @@ const Register = () => {
         email: data.email,
         password: data.password,
         phone: data.phone,
-        address: data.address
-        ? {
-            street: data.address.street,
-            city: data.address.city,
-            zip: data.address.zip,
-          }
-        : undefined, // Avoid errors if address is missing
+        address: data.address,
       };
-      console.log( userInfo);
+
       const res = await createUser(userInfo).unwrap();
-      console.log("res", res);
-      toast.success("register in", { id: toastId, duration: 2000 });
+      console.log("User Registered:", res);
+
+      toast.success("Successfully Registered!", { id: toastId, duration: 2000 });
       navigate(`/`);
     } catch (err) {
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      console.error("Registration Error:", err);
+      toast.error("Something went wrong. Please try again.", { id: toastId, duration: 2000 });
     }
   };
 
@@ -67,20 +57,18 @@ const Register = () => {
           Create an Account
         </h2>
 
-        {/* CamperForm Handling the Registration */}
-        <CamperForm onsubmit={handleSubmit(onSubmit)}>
+        <CamperForm onSubmit={handleSubmit(onSubmit)}>
           <FormInput
             name="name"
             label="Name"
             type="text"
-            className="mb-4"
             placeholder="Enter your Name"
+            className="mb-4"
             rules={{ required: "Name is required" }}
             error={errors?.name?.message}
             control={control}
           />
 
-          {/* Email Field */}
           <FormInput
             name="email"
             label="Email"
@@ -94,25 +82,21 @@ const Register = () => {
                 message: "Invalid email address",
               },
             }}
-            error={errors.email?.message} // Pass the error message
+            error={errors.email?.message}
             control={control}
           />
 
-          {/* Password Field */}
           <FormInput
             name="password"
             label="Password"
             type="password"
             placeholder="Enter your password"
             className="mb-4"
-            rules={{
-              required: "Password is required",
-            }}
-            error={errors.password?.message} // Pass the error message
+            rules={{ required: "Password is required" }}
+            error={errors.password?.message}
             control={control}
           />
 
-          {/* Phone Field */}
           <FormInput
             name="phone"
             label="Phone"
@@ -120,11 +104,10 @@ const Register = () => {
             placeholder="Enter your phone number"
             className="mb-4"
             rules={{ required: "Phone number is required" }}
-            error={errors.phone?.message} // Pass the error message
+            error={errors.phone?.message}
             control={control}
           />
 
-          {/* Address Fields */}
           <FormInput
             name="address.street"
             label="Street"
@@ -132,9 +115,10 @@ const Register = () => {
             placeholder="Enter your street address"
             className="mb-4"
             rules={{ required: "Street is required" }}
-            error={errors.address?.street?.message} // Pass the error message
+            error={errors.address?.street?.message}
             control={control}
           />
+
           <FormInput
             name="address.city"
             label="City"
@@ -142,9 +126,10 @@ const Register = () => {
             placeholder="Enter your city"
             className="mb-4"
             rules={{ required: "City is required" }}
-            error={errors.address?.city?.message} // Pass the error message
+            error={errors.address?.city?.message}
             control={control}
           />
+
           <FormInput
             name="address.zip"
             label="Zip"
@@ -152,11 +137,10 @@ const Register = () => {
             placeholder="Enter your zip code"
             className="mb-4"
             rules={{ required: "Zip code is required" }}
-            error={errors.address?.zip?.message} // Pass the error message
+            error={errors.address?.zip?.message}
             control={control}
           />
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full p-3 bg-[#833d47] hover:bg-[#64373e] text-white font-semibold rounded-lg transition duration-300"
@@ -165,7 +149,6 @@ const Register = () => {
           </button>
         </CamperForm>
 
-        {/* Login Link */}
         <p className="text-center text-gray-600 mt-4 text-sm">
           Already have an account?{" "}
           <a

@@ -32,7 +32,7 @@ const ReProducts = () => {
             <h3 className="text-lg font-semibold mt-3">{product.name}</h3>
             <p className="text-[#90c63e] font-bold">{product.price}</p>
             <Link
-              to={`/product/${product._id}`}
+              to={`/products/${product._id}`}
               className="block text-center bg-[#90c63e] hover:bg-[#833d47] text-white py-2 mt-3 rounded transition"
             >
               View Details
