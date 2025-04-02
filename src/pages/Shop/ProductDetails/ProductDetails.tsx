@@ -4,30 +4,37 @@ import { useGetSingleProductQuery } from "../../../redux/features/products/produ
 import { Star } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { motion } from "framer-motion";
-import { useGetAllReviewsQuery, useAddReviewsMutation } from "@/redux/features/reviews/reviewsApi";
+import {
+  useGetAllReviewsQuery,
+  useAddReviewsMutation,
+} from "@/redux/features/reviews/reviewsApi";
 import { toast } from "sonner";
 import { useAppSelector } from "@/redux/features/hook";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { TReviews } from "@/types/reviews";
+import { useAddToCartMutation } from "@/redux/features/cart/cartApi";
+import { useGetUserQuery } from "@/redux/features/user/userApi";
 
 const ProductDetails = () => {
   const user = useAppSelector(useCurrentUser);
   const { id } = useParams();
   const { data, isLoading, error } = useGetSingleProductQuery(id!);
 
+  const [addToCart] = useAddToCartMutation();
   const { data: reviews } = useGetAllReviewsQuery(undefined);
-  const [addReviews] = useAddReviewsMutation();  
+
+  const { data: users } = useGetUserQuery(user?.userEmail || "");
+  const [addReviews] = useAddReviewsMutation();
   const product = data?.data || null;
-  
+
   const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(2);
   const [comment, setComment] = useState("");
 
   // Filter reviews based on product ID
-  const productReviews: TReviews[] = reviews?.data?.filter(
-    (review: TReviews) => review.product._id === id
-  ) || [];
-  
+  const productReviews: TReviews[] =
+    reviews?.data?.filter((review: TReviews) => review.product._id === id) ||
+    [];
 
   const handleIncrement = () => {
     if (quantity < product.stock) setQuantity(quantity + 1);
@@ -40,12 +47,53 @@ const ProductDetails = () => {
     if (!comment.trim()) return toast.error("Review comment cannot be empty!");
 
     try {
-      await addReviews({ product: id, userEmail:user?.userEmail, rating, comment });
-      console.log({ product: id, userEmail:user?.userEmail, rating, comment })
+      await addReviews({
+        product: id,
+        userEmail: user?.userEmail,
+        rating,
+        comment,
+      });
+      console.log({ product: id, userEmail: user?.userEmail, rating, comment });
       setComment("");
       setRating(2);
       toast.success("Review successfully added!");
     } catch {
+      toast.error("Something went wrong!");
+    }
+  };
+
+  const handleCartSubmit = async () => {
+    if (!product) {
+      toast.error("Product data is missing!");
+      return;
+    }
+
+    try {
+      await addToCart({
+        user: users?.data?._id,
+        items: [
+          {
+            product: product._id,
+            quantity: quantity,
+            price: product.price,
+          },
+        ],
+        totalAmount: product.price * quantity,
+      });
+console.log({
+  user: users?.data?._id,
+  items: [
+    {
+      product: product._id,
+      quantity: quantity,
+      price: product.price,
+    },
+  ],
+  totalAmount: product.price * quantity,
+})
+      toast.success("Product added to cart successfully!");
+    } catch (error) {
+      console.error(error);
       toast.error("Something went wrong!");
     }
   };
@@ -114,7 +162,11 @@ const ProductDetails = () => {
             <Button
               onClick={handleDecrement}
               disabled={quantity === 1}
-              className={`px-4 py-2 rounded-lg text-2xl ${quantity === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-[#833d47] text-white"}`}
+              className={`px-4 py-2 rounded-lg text-2xl ${
+                quantity === 1
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#833d47] text-white"
+              }`}
             >
               -
             </Button>
@@ -122,7 +174,11 @@ const ProductDetails = () => {
             <Button
               onClick={handleIncrement}
               disabled={quantity >= product.stock}
-              className={`px-4 py-2 rounded-lg text-2xl ${quantity >= product.stock ? "bg-gray-400 cursor-not-allowed" : "bg-[#833d47] text-white"}`}
+              className={`px-4 py-2 rounded-lg text-2xl ${
+                quantity >= product.stock
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#833d47] text-white"
+              }`}
             >
               +
             </Button>
@@ -134,7 +190,10 @@ const ProductDetails = () => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             className="mt-8 flex justify-center gap-6"
           >
-            <Button className="bg-[#833d47] hover:bg-[#90c63e] px-8 py-4 rounded-lg text-white font-semibold text-lg">
+            <Button
+              onClick={handleCartSubmit}
+              className="bg-[#833d47] hover:bg-[#90c63e] px-8 py-4 rounded-lg text-white font-semibold text-lg"
+            >
               Add to Cart
             </Button>
             <Button className="bg-[#90c63e] hover:bg-[#833d47] px-8 py-4 rounded-lg text-white font-semibold text-lg">
@@ -150,7 +209,10 @@ const ProductDetails = () => {
         <div className="mt-4 max-h-60 overflow-y-auto bg-gray-200 p-4 rounded-lg shadow-md">
           {productReviews?.length > 0 ? (
             productReviews?.map((review: TReviews) => (
-              <div key={review._id} className="border-b pb-4 mb-4 flex items-start gap-4">
+              <div
+                key={review._id}
+                className="border-b pb-4 mb-4 flex items-start gap-4"
+              >
                 <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
                   {/* <span className="text-xl text-[#833d47] font-semibold">
                     {review.userEmail}
@@ -164,7 +226,11 @@ const ProductDetails = () => {
                       {Array.from({ length: 5 }, (_, index) => (
                         <Star
                           key={index}
-                          className={`w-5 h-5 ${index < review.rating ? "text-yellow-400" : "text-gray-300"}`}
+                          className={`w-5 h-5 ${
+                            index < review.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
                         />
                       ))}
                     </div>
@@ -179,18 +245,37 @@ const ProductDetails = () => {
         </div>
 
         <div className="mt-6">
-          <h4 className="text-xl font-semibold text-gray-800">Leave a Review</h4>
+          <h4 className="text-xl font-semibold text-gray-800">
+            Leave a Review
+          </h4>
           <div className="mt-2 flex justify-center gap-4">
             <div className="flex items-center gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
-                <button key={star} onClick={() => setRating(star)} className={`p-2 ${star <= rating ? "text-[#833d47]" : "text-[#90c63e]"}`}>
+                <button
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={`p-2 ${
+                    star <= rating ? "text-[#833d47]" : "text-[#90c63e]"
+                  }`}
+                >
                   <Star className="w-6 h-6" />
                 </button>
               ))}
             </div>
 
-            <input type="text" placeholder="Write your review..." className="border p-2 rounded-lg w-60" value={comment} onChange={(e) => setComment(e.target.value)} />
-            <Button onClick={handleReviewSubmit} className="bg-[#833d47] text-white px-6 py-2 rounded-lg">Submit</Button>
+            <input
+              type="text"
+              placeholder="Write your review..."
+              className="border p-2 rounded-lg w-60"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <Button
+              onClick={handleReviewSubmit}
+              className="bg-[#833d47] text-white px-6 py-2 rounded-lg"
+            >
+              Submit
+            </Button>
           </div>
         </div>
       </div>

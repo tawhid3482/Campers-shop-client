@@ -15,8 +15,14 @@ const cartApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    getUserCart: builder.query({
+      query: (email: string) => ({
+        url: `cart/${email}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-
-export const { useAddToCartMutation, useGetAllCartItemsQuery } = cartApi;
+export const { useAddToCartMutation, useGetAllCartItemsQuery,useGetUserCartQuery } = cartApi;
