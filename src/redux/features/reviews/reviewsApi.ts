@@ -6,26 +6,24 @@ const ReviewsApi = baseApi.injectEndpoints({
       query: (info) => ({
         url: "reviews",
         method: "POST",
-        body: info,
+        body: info, // Ensure you send the `info` in the body for the POST request
       }),
+      invalidatesTags: [{ type: "Reviews" }], // Invalidate the cache for reviews after adding a new review
     }),
     getAllReviews: builder.query({
       query: () => ({
         url: "reviews",
         method: "GET",
       }),
+      providesTags: ["Reviews"], // Provide a tag for the reviews query to cache it
     }),
-
     getSingleReviews: builder.query({
-      query: (id) => {
-        console.log("Fetching product with id:", id);
-        return {
-          url: `reviews/${id}`,
-          method: "GET",
-        };
-      },
+      query: (id) => ({
+        url: `reviews/${id}`,
+        method: "GET",
+      }),
     }),
   }),
 });
 
-export const { useAddReviewsMutation,useGetAllReviewsQuery,useGetSingleReviewsQuery } = ReviewsApi;
+export const { useAddReviewsMutation, useGetAllReviewsQuery, useGetSingleReviewsQuery } = ReviewsApi;

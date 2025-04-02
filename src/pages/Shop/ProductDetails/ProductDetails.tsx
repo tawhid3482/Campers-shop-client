@@ -16,8 +16,6 @@ const ProductDetails = () => {
   const { data, isLoading, error } = useGetSingleProductQuery(id!);
 
   const { data: reviews } = useGetAllReviewsQuery(undefined);
-  console.log(reviews)
-
   const [addReviews] = useAddReviewsMutation();  
   const product = data?.data || null;
   
@@ -25,9 +23,11 @@ const ProductDetails = () => {
   const [rating, setRating] = useState(2);
   const [comment, setComment] = useState("");
 
-  const productReviews: TReviews[] = reviews?.data || null 
-   console.log(productReviews)
-
+  // Filter reviews based on product ID
+  const productReviews: TReviews[] = reviews?.data?.filter(
+    (review: TReviews) => review.product._id === id
+  ) || [];
+  
 
   const handleIncrement = () => {
     if (quantity < product.stock) setQuantity(quantity + 1);
@@ -152,9 +152,9 @@ const ProductDetails = () => {
             productReviews?.map((review: TReviews) => (
               <div key={review._id} className="border-b pb-4 mb-4 flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
-                  <span className="text-xl text-[#833d47] font-semibold">
+                  {/* <span className="text-xl text-[#833d47] font-semibold">
                     {review.userEmail}
-                  </span>
+                  </span> */}
                 </div>
 
                 <div className="flex-1">
