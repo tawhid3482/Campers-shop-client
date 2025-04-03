@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, ShoppingCart, Heart } from "lucide-react";
+import { Menu, X, ShoppingCart,  } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.gif";
 import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
@@ -55,17 +55,18 @@ const Navbar = () => {
 
         {/* Icons and Authentication */}
         <div className="flex items-center space-x-2 md:space-x-4 lg:space-x-6">
-          <Link
+          {/* <Link
             to="/wishlist"
-            className={`hover:bg-[#833d47] p-1 rounded-lg ${
-              location.pathname === "/wishlist" ? "bg-[#833d47]" : ""
-            }`}
+            className={`relative flex items-center gap-2 px-2 py-2 rounded-lg transition-all duration-300 hover:bg-[#833d47]`}
           >
+             <span className="absolute -top-2 -right-2 bg-[#833d47] text-white text-xs font-bold px-2 py-1 rounded-full">
+              {cart?.data?.length || 0}
+            </span>
             <Heart size={22} />
-          </Link>
+          </Link> */}
           <Link
             to="/cart"
-            className={`relative flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300`}
+            className={`relative flex items-center gap-2 px-2 py-2 rounded-lg transition-all duration-300 hover:bg-[#833d47] `}
           >
             {/* Cart Count Badge */}
             <span className="absolute -top-2 -right-2 bg-[#833d47] text-white text-xs font-bold px-2 py-1 rounded-full">
