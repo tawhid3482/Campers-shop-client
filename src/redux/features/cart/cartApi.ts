@@ -9,6 +9,7 @@ const cartApi = baseApi.injectEndpoints({
         body: info,
       }),
     }),
+
     getAllCartItems: builder.query({
       query: () => ({
         url: "cart",
@@ -17,12 +18,23 @@ const cartApi = baseApi.injectEndpoints({
     }),
 
     getUserCart: builder.query({
-      query: (email: string) => ({
-        url: `cart/${email}`,
-        method: "GET",
-      }),
+      query: (email: string) => {
+        if (!email) throw new Error("Email is required to fetch the cart");
+        return {
+          url: `cart/${email}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response) => {
+        if (!response) throw new Error("Cart data not found");
+        return response;
+      },
     }),
   }),
 });
 
-export const { useAddToCartMutation, useGetAllCartItemsQuery,useGetUserCartQuery } = cartApi;
+export const { 
+  useAddToCartMutation, 
+  useGetAllCartItemsQuery, 
+  useGetUserCartQuery 
+} = cartApi;
