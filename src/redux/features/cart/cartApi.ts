@@ -39,6 +39,17 @@ const cartApi = baseApi.injectEndpoints({
         };
       },
     }),
+    updateCart: builder.mutation({
+      query: ({ id, data }) => {
+        console.log(id, data);
+        return {
+          url: `cart/${id}`,
+          method: "PATCH",
+          body: data,
+        };
+      },
+    }),
+    
   }),
 });
 
@@ -46,5 +57,6 @@ export const {
   useAddToCartMutation,
   useGetAllCartItemsQuery,
   useGetUserCartQuery,
-  useDeleteCartMutation
+  useDeleteCartMutation,
+  useUpdateCartMutation
 } = cartApi;

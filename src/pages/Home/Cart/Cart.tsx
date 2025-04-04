@@ -1,34 +1,80 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
-import { useDeleteCartMutation, useGetUserCartQuery } from "@/redux/features/cart/cartApi";
+import {
+  useDeleteCartMutation,
+  useGetUserCartQuery,
+  useUpdateCartMutation,
+} from "@/redux/features/cart/cartApi";
 import { useAppSelector } from "@/redux/features/hook";
 import { Trash2 } from "lucide-react";
 import { TCart } from "@/types/cart";
 import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 const Cart = () => {
   const user = useAppSelector(useCurrentUser);
 
-  const { data: cartData, isLoading, isError } = useGetUserCartQuery(user?.userEmail || "");
+  const {
+    data: cartData,
+    isLoading,
+    isError,
+  } = useGetUserCartQuery(user?.userEmail || "");
 
   const [deleteCart] = useDeleteCartMutation();
+  const [updateCartMutation] = useUpdateCartMutation();
 
   const handleDelete = async (id: string) => {
     try {
-      
-      await deleteCart(id).unwrap();
-      toast.success("Cart deleted successfully");
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        await deleteCart(id).unwrap();
+        Swal.fire("Deleted!", "Your Cart has been deleted.", "success");
+      }
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
 
-  // Optional: Placeholder updateCart function
-  const updateCart = async ({ id, quantity }: { id: string; quantity: number }) => {
-    // TODO: implement actual updateCart mutation
-    console.log("Update cart:", id, quantity);
-    toast.info("Cart update not yet implemented.");
+  // ✅ Updated cart quantity handler (FIXED)
+  const updateCart = async (
+    id: string,
+    productId: string,
+    newQuantity: number,
+    price: number
+  ) => {
+    try {
+      const currentCartItem = cartItems.find((item) => item._id === id);
+      if (!currentCartItem) return;
+
+      const userId = currentCartItem.user._id;
+
+      const payload = {
+        user: userId,
+        items: [
+          {
+            product: productId,
+            quantity: newQuantity,
+            price: price,
+          },
+        ],
+        totalAmount: price * newQuantity,
+      };
+
+      await updateCartMutation({ id, data: payload }).unwrap();
+      toast.success("Cart updated successfully");
+    } catch (error) {
+      toast.error("Failed to update cart");
+    }
   };
 
   if (isLoading) return <p>Loading your cart...</p>;
@@ -53,12 +99,20 @@ const Cart = () => {
                   className="w-64 h-auto max-h-48 object-cover rounded"
                 />
                 <div>
-                  <h3 className="font-semibold text-xl">{item.items[0]?.product?.name}</h3>
-                  <p className="text-gray-500">Price: ${item.items[0]?.product?.price}</p>
-                  <p className="text-gray-500">Quantity: {item.items[0]?.quantity}</p>
+                  <h3 className="font-semibold text-xl">
+                    {item.items[0]?.product?.name}
+                  </h3>
+                  <p className="text-gray-500">
+                    Price: ${item.items[0]?.product?.price}
+                  </p>
+                  <p className="text-gray-500">
+                    Quantity: {item.items[0]?.quantity}
+                  </p>
                   <p className="font-bold">
                     Total: $
-                    {(item.items[0]?.product?.price * item.items[0]?.quantity).toFixed(2)}
+                    {(
+                      item.items[0]?.product?.price * item.items[0]?.quantity
+                    ).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -66,10 +120,12 @@ const Cart = () => {
                 <Button
                   variant="outline"
                   onClick={() =>
-                    updateCart({
-                      id: item._id,
-                      quantity: item.items[0]?.quantity + 1,
-                    })
+                    updateCart(
+                      item._id,
+                      item.items[0].product._id,
+                      item.items[0].quantity + 1,
+                      item.items[0].product.price
+                    )
                   }
                 >
                   +
@@ -77,10 +133,12 @@ const Cart = () => {
                 <Button
                   variant="outline"
                   onClick={() =>
-                    updateCart({
-                      id: item._id,
-                      quantity: Math.max(1, item.items[0]?.quantity - 1),
-                    })
+                    updateCart(
+                      item._id,
+                      item.items[0].product._id,
+                      Math.max(1, item.items[0].quantity - 1),
+                      item.items[0].product.price
+                    )
                   }
                 >
                   -
@@ -105,7 +163,8 @@ const Cart = () => {
             {cartItems
               .reduce(
                 (acc: number, item: TCart) =>
-                  acc + item.items[0]?.product?.price * item.items[0]?.quantity,
+                  acc +
+                  item.items[0]?.product?.price * item.items[0]?.quantity,
                 0
               )
               .toFixed(2)}
