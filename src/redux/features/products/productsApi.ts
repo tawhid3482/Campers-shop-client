@@ -8,6 +8,7 @@ const productsApi = baseApi.injectEndpoints({
         method: "GET",
         // body: userInfo,
       }),
+      providesTags: ["products"],
     }),
 
     getSingleProduct: builder.query({
@@ -18,6 +19,7 @@ const productsApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["products"],
     }),
   }),
 });

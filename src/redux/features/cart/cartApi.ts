@@ -8,6 +8,7 @@ const cartApi = baseApi.injectEndpoints({
         method: "POST",
         body: info,
       }),
+      invalidatesTags: ["carts"],
     }),
 
     getAllCartItems: builder.query({
@@ -15,6 +16,7 @@ const cartApi = baseApi.injectEndpoints({
         url: "cart",
         method: "GET",
       }),
+      providesTags: ["carts"],
     }),
 
     getUserCart: builder.query({
@@ -25,6 +27,7 @@ const cartApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["carts"],
       transformResponse: (response) => {
         if (!response) throw new Error("Cart data not found");
         return response;
@@ -38,6 +41,7 @@ const cartApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: ["carts"],
     }),
     updateCart: builder.mutation({
       query: ({ id, data }) => {
@@ -48,8 +52,8 @@ const cartApi = baseApi.injectEndpoints({
           body: data,
         };
       },
+      invalidatesTags: ["carts"],
     }),
-    
   }),
 });
 
@@ -58,5 +62,5 @@ export const {
   useGetAllCartItemsQuery,
   useGetUserCartQuery,
   useDeleteCartMutation,
-  useUpdateCartMutation
+  useUpdateCartMutation,
 } = cartApi;

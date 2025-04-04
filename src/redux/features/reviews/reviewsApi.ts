@@ -8,14 +8,14 @@ const ReviewsApi = baseApi.injectEndpoints({
         method: "POST",
         body: info, // Ensure you send the `info` in the body for the POST request
       }),
-      invalidatesTags: [{ type: "Reviews" }], // Invalidate the cache for reviews after adding a new review
+      invalidatesTags: ["reviews"], // Invalidate the reviews cache after adding a review
     }),
     getAllReviews: builder.query({
       query: () => ({
         url: "reviews",
         method: "GET",
       }),
-      providesTags: ["Reviews"], // Provide a tag for the reviews query to cache it
+      providesTags: ["reviews"], // Provide a tag for the reviews query to cache it
     }),
     getSingleReviews: builder.query({
       query: (id) => ({
