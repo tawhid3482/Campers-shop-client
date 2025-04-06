@@ -1,66 +1,66 @@
 import { baseApi } from "@/redux/api/baseApi";
 
-const cartApi = baseApi.injectEndpoints({
+const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addToCart: builder.mutation({
+    createOrders: builder.mutation({
       query: (info) => ({
-        url: "cart",
+        url: "orders",
         method: "POST",
         body: info,
       }),
-      invalidatesTags: ["carts"],
+      invalidatesTags: ["orders"],
     }),
 
-    getAllCartItems: builder.query({
+    getAllOrderItems: builder.query({
       query: () => ({
-        url: "cart",
+        url: "order",
         method: "GET",
       }),
-      providesTags: ["carts"],
+      providesTags: ["orders"],
     }),
 
-    getUserCart: builder.query({
+    getUserOrder: builder.query({
       query: (email: string) => {
-        if (!email) throw new Error("Email is required to fetch the cart");
+        if (!email) throw new Error("Email is required to fetch the Order");
         return {
-          url: `cart/${email}`,
+          url: `order/${email}`,
           method: "GET",
         };
       },
-      providesTags: ["carts"],
+      providesTags: ["orders"],
       transformResponse: (response) => {
-        if (!response) throw new Error("Cart data not found");
+        if (!response) throw new Error("Order data not found");
         return response;
       },
     }),
 
-    deleteCart: builder.mutation({
+    deleteOrder: builder.mutation({
       query: (id: string) => {
         return {
-          url: `cart/${id}`,
+          url: `order/${id}`,
           method: "DELETE",
         };
       },
-      invalidatesTags: ["carts"],
+      invalidatesTags: ["orders"],
     }),
-    updateCart: builder.mutation({
+    updateOrder: builder.mutation({
       query: ({ id, data }) => {
         console.log(id, data);
         return {
-          url: `cart/${id}`,
+          url: `order/${id}`,
           method: "PATCH",
           body: data,
         };
       },
-      invalidatesTags: ["carts"],
+      invalidatesTags: ["orders"],
     }),
   }),
 });
 
 export const {
-  useAddToCartMutation,
-  useGetAllCartItemsQuery,
-  useGetUserCartQuery,
-  useDeleteCartMutation,
-  useUpdateCartMutation,
-} = cartApi;
+  useCreateOrdersMutation,
+  useGetAllOrderItemsQuery,
+  useGetUserOrderQuery,
+  useDeleteOrderMutation,
+  useUpdateOrderMutation,
+} = orderApi;
