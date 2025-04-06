@@ -11,6 +11,7 @@ import { TCart } from "@/types/cart";
 import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const user = useAppSelector(useCurrentUser);
@@ -163,15 +164,16 @@ const Cart = () => {
             {cartItems
               .reduce(
                 (acc: number, item: TCart) =>
-                  acc +
-                  item.items[0]?.product?.price * item.items[0]?.quantity,
+                  acc + item.items[0]?.product?.price * item.items[0]?.quantity,
                 0
               )
               .toFixed(2)}
           </p>
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
-            Proceed to Checkout
-          </Button>
+          <Link to="/checkout">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
+              Proceed to Checkout
+            </Button>
+          </Link>
         </div>
       )}
     </div>

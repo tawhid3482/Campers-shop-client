@@ -14,6 +14,7 @@ import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { TReviews } from "@/types/reviews";
 import { useAddToCartMutation } from "@/redux/features/cart/cartApi";
 import { useGetUserQuery } from "@/redux/features/user/userApi";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
   const user = useAppSelector(useCurrentUser);
@@ -196,9 +197,11 @@ console.log({
             >
               Add to Cart
             </Button>
+            <Link to="/checkout">
             <Button className="bg-[#90c63e] hover:bg-[#833d47] px-8 py-4 rounded-lg text-white font-semibold text-lg">
               Buy Now
             </Button>
+            </Link>
           </motion.div>
         </motion.div>
       </div>
