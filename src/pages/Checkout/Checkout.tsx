@@ -7,28 +7,29 @@ import { TCart } from "@/types/cart";
 import { useGetUserQuery } from "@/redux/features/user/userApi";
 import { useCreatePaymentsMutation } from "@/redux/features/payment/paymentApi";
 
-const Checkout: React.FC = () => {
+const Checkout = () => {
   const user = useAppSelector(useCurrentUser);
   const { data: cartData } = useGetUserCartQuery(user?.userEmail || "");
   const cartItems = (cartData as { data: TCart[] } | undefined)?.data || [];
   const { data: users } = useGetUserQuery(user?.userEmail || "");
-  
+
   const [shippingInfo, setShippingInfo] = useState({
     name: "",
     address: "",
     city: "",
-    zip: "",
+    zipCode: "",
+    phone: "",
   });
-  
+
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: "",
     expiry: "",
     cvv: "",
   });
-  
+
   const [createOrder] = useCreateOrdersMutation();
   const [createPayments] = useCreatePaymentsMutation();
-  
+
   const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShippingInfo({
       ...shippingInfo,
@@ -51,7 +52,26 @@ const Checkout: React.FC = () => {
     );
   };
 
-  const handleSubmit = async () => {
+  const handlePayment = async (orderId: string) => {
+    const paymentPayload = {
+      user: users?.data?._id,
+      orderId,
+      paymentMethod: "Card",
+      transactionId: "",
+      status: "Pending",
+      amount: calculateTotalAmount(),
+    };
+    console.log("Payment Payload:", paymentPayload);
+    try {
+      const res = await createPayments(paymentPayload).unwrap();
+      console.log("Payment created:", res);
+      // Optionally redirect to SSLCommerz gateway
+    } catch (error) {
+      console.error("Error creating payment:", error);
+    }
+  };
+
+  const handlePlaceOrder = async () => {
     const orderPayload = {
       user: users?.data?._id,
       items: cartItems.map((item) => ({
@@ -63,50 +83,35 @@ const Checkout: React.FC = () => {
       status: "Pending",
       shippingAddress: shippingInfo,
     };
+    // console.log("Order Payload:", orderPayload);
 
     try {
-      const orderResponse = await createOrder(orderPayload);
+      const orderResponse = await createOrder(orderPayload).unwrap();
+      console.log("Order created:", orderResponse);
+      console.log("Order created_id:", orderResponse?.data?._id);
       if (orderResponse?.data?._id) {
-        handlePayment(orderResponse.data._id);  // Pass order ID for payment
+        await handlePayment(orderResponse?.data?._id);
       }
     } catch (error) {
-      console.error("Error creating order:", error);
-    }
-  };
-
-  const handlePayment = async (orderId: string) => {
-    const paymentPayload = {
-      user: users?.data?._id,
-      orderId,
-      paymentMethod: "SSLCommerz",
-      transactionId: "", // Use the generated transaction ID here
-      status: "Pending", // Adjust as needed
-      amount: calculateTotalAmount(),
-    };
-
-    try {
-      const paymentResponse = await createPayments(paymentPayload);
-      if (paymentResponse?.data?.paymentUrl) {
-        // Redirect the user to SSLCommerz for payment processing
-        window.location.href = paymentResponse.data.paymentUrl;
-      }
-    } catch (error) {
-      console.error("Error creating payment:", error);
+      console.error("Error placing order:", error);
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100">
       <div className="flex flex-col space-y-8">
-        
         {/* Order Summary */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-gray-700">Order Summary</h2>
           <ul className="space-y-4 mt-4">
             {cartItems.map((item, index) => (
               <li key={index} className="flex justify-between text-sm">
-                <span>{item.items[0]?.product?.name} (x{item.items[0]?.quantity})</span>
-                <span>${item.items[0]?.product?.price * item.items[0]?.quantity}</span>
+                <span>
+                  {item.items[0]?.product?.name} (x{item.items[0]?.quantity})
+                </span>
+                <span>
+                  ${item.items[0]?.product?.price * item.items[0]?.quantity}
+                </span>
               </li>
             ))}
           </ul>
@@ -115,10 +120,12 @@ const Checkout: React.FC = () => {
             <span>${calculateTotalAmount()}</span>
           </div>
         </div>
-        
+
         {/* Shipping Information */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700">Shipping Information</h2>
+          <h2 className="text-xl font-semibold text-gray-700">
+            Shipping Information
+          </h2>
           <input
             type="text"
             name="name"
@@ -144,24 +151,30 @@ const Checkout: React.FC = () => {
             className="mt-2 w-full p-3 border border-gray-300 rounded-md"
           />
           <input
-            type="text"
-            name="zip"
-            value={shippingInfo.zip}
+            type="number"
+            name="zipCode"
+            value={shippingInfo.zipCode}
             onChange={handleShippingChange}
             placeholder="Zip Code"
             className="mt-2 w-full p-3 border border-gray-300 rounded-md"
           />
+          <input
+            type="number"
+            name="phone"
+            value={shippingInfo.phone}
+            onChange={handleShippingChange}
+            placeholder="Phone Number"
+            className="mt-2 w-full p-3 border border-gray-300 rounded-md"
+          />
         </div>
 
-        {/* Payment Information - SSLCommerz Design */}
-     
         {/* Submit Button */}
         <div className="text-center mt-6">
           <button
-            onClick={handleSubmit}
+            onClick={handlePlaceOrder}
             className="w-full bg-[#90c63e] text-white py-3 rounded-md text-xl hover:bg-[#833d47] transition duration-300"
           >
-            Complete Order
+            Place Order
           </button>
         </div>
       </div>
