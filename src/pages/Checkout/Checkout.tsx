@@ -21,11 +21,11 @@ const Checkout = () => {
     phone: "",
   });
 
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
-  });
+  // const [paymentInfo, setPaymentInfo] = useState({
+  //   cardNumber: "",
+  //   expiry: "",
+  //   cvv: "",
+  // });
 
   const [createOrder] = useCreateOrdersMutation();
   const [createPayments] = useCreatePaymentsMutation();
@@ -37,12 +37,12 @@ const Checkout = () => {
     });
   };
 
-  const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPaymentInfo({
-      ...paymentInfo,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setPaymentInfo({
+  //     ...paymentInfo,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const calculateTotalAmount = () => {
     return cartItems.reduce(
@@ -61,11 +61,12 @@ const Checkout = () => {
       status: "Pending",
       amount: calculateTotalAmount(),
     };
-    console.log("Payment Payload:", paymentPayload);
     try {
       const res = await createPayments(paymentPayload).unwrap();
       console.log("Payment created:", res);
-      // Optionally redirect to SSLCommerz gateway
+      if (res?.data) {
+        window.location.replace(res.data);
+      }
     } catch (error) {
       console.error("Error creating payment:", error);
     }
@@ -81,9 +82,9 @@ const Checkout = () => {
       })),
       totalAmount: calculateTotalAmount(),
       status: "Pending",
+      orderStatus:"Pending",
       shippingAddress: shippingInfo,
     };
-    // console.log("Order Payload:", orderPayload);
 
     try {
       const orderResponse = await createOrder(orderPayload).unwrap();
