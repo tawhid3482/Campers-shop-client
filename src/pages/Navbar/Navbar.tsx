@@ -84,7 +84,7 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center space-x-3">
                 <Link
-                  to="/profile"
+                  to="/user/dashboard/profile"
                   className={`px-3 py-2 rounded ${
                     location.pathname === "/profile"
                       ? "bg-[#3b4927]"

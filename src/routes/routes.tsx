@@ -10,6 +10,9 @@ import ProductDetails from "../pages/Shop/ProductDetails/ProductDetails";
 import Cart from "@/pages/Home/Cart/Cart";
 import ProtectedRoute from "@/Components/layout/ProtectedRoute";
 import Checkout from "@/pages/Checkout/Checkout";
+import { routeGenerator } from "@/utils/routeGenerator";
+import DashboardLayout from "@/Components/layout/DashboardLayout";
+import { userPaths } from "./user.route";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,15 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:'/user',
+    element:(
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children:routeGenerator(userPaths)
+  }
 ]);
 
 export default router;

@@ -13,7 +13,7 @@ const orderApi = baseApi.injectEndpoints({
 
     getAllOrderItems: builder.query({
       query: () => ({
-        url: "order",
+        url: "orders",
         method: "GET",
       }),
       providesTags: ["orders"],
@@ -23,7 +23,7 @@ const orderApi = baseApi.injectEndpoints({
       query: (email: string) => {
         if (!email) throw new Error("Email is required to fetch the Order");
         return {
-          url: `order/${email}`,
+          url: `orders/${email}`,
           method: "GET",
         };
       },
@@ -37,7 +37,7 @@ const orderApi = baseApi.injectEndpoints({
     deleteOrder: builder.mutation({
       query: (id: string) => {
         return {
-          url: `order/${id}`,
+          url: `orders/${id}`,
           method: "DELETE",
         };
       },

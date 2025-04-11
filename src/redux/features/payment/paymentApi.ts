@@ -21,7 +21,7 @@ const paymentApi = baseApi.injectEndpoints({
 
     getUserPayment: builder.query({
       query: (email: string) => {
-        if (!email) throw new Error("Email is required to fetch the payment");
+        if (!email) throw new Error("Email is required to fetch the cart");
         return {
           url: `payment/${email}`,
           method: "GET",
@@ -29,11 +29,10 @@ const paymentApi = baseApi.injectEndpoints({
       },
       providesTags: ["payments"],
       transformResponse: (response) => {
-        if (!response) throw new Error("payment data not found");
+        if (!response) throw new Error("Payment data not found");
         return response;
       },
     }),
-
     deletePayment: builder.mutation({
       query: (id: string) => {
         return {

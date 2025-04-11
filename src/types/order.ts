@@ -1,4 +1,8 @@
+import { MomentInput } from "moment";
+
 export type TOrder = {
+  createdAt: MomentInput;
+  _id?:string,
   user: string;
   items: {
     product: string;
@@ -13,5 +17,6 @@ export type TOrder = {
     city: string;
     phone: string;
     zipCode: string;
+    createdAt: string; 
   };
 };
