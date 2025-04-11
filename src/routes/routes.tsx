@@ -13,6 +13,7 @@ import Checkout from "@/pages/Checkout/Checkout";
 import { routeGenerator } from "@/utils/routeGenerator";
 import DashboardLayout from "@/Components/layout/DashboardLayout";
 import { userPaths } from "./user.route";
+import { adminPaths } from "./admin.route";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,15 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children:routeGenerator(userPaths)
+  },
+  {
+    path:'/admin',
+    element:(
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children:routeGenerator(adminPaths)
   }
 ]);
 

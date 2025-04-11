@@ -11,11 +11,19 @@ const userApi = baseApi.injectEndpoints({
     }),
     getUser: builder.query({
       query: (email: string) => ({
-        url: `users/${email}`, 
+        url: `users/${email}`,
         method: "GET",
       }),
+    }),
+    getAdminStats: builder.query({
+      query: () => ({
+        url: "admin-stats",
+        method: "GET",
+      }),
+      providesTags: ["users"],
     }),
   }),
 });
 
-export const {useCreateUserMutation,useGetUserQuery} = userApi;
+export const { useCreateUserMutation, useGetUserQuery, useGetAdminStatsQuery } =
+  userApi;
