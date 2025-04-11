@@ -7,6 +7,7 @@ import {
   FaCartPlus,
   FaShoppingBag,
   FaHome,
+  FaProductHunt,
 } from "react-icons/fa";
 import { useAppSelector } from "@/redux/features/hook";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
@@ -90,14 +91,26 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <NavLink
-                  to="/admin/dashboard/rsd"
+                  to="/admin/dashboard/addProduct"
                   className={({ isActive }) =>
                     `flex items-center text-lg transition duration-300 ease-in-out ${
                       isActive ? "text-yellow-400" : "text-white"
                     }`
                   }
                 >
-                  <FaRegStar className="mr-3" /> Reviews
+                  <FaRegStar className="mr-3" /> AddProduct
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin/dashboard/manage"
+                  className={({ isActive }) =>
+                    `flex items-center text-lg transition duration-300 ease-in-out ${
+                      isActive ? "text-yellow-400" : "text-white"
+                    }`
+                  }
+                >
+                  <FaProductHunt className="mr-3" /> Manage Product
                 </NavLink>
               </li>
             </>

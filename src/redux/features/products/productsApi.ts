@@ -2,6 +2,14 @@ import { baseApi } from "../../api/baseApi";
 
 const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    addToProduct: builder.mutation({
+      query: (info) => ({
+        url: "products",
+        method: "POST",
+        body: info,
+      }),
+      invalidatesTags: ["products"],
+    }),
     getAllProducts: builder.query({
       query: () => ({
         url: "products",
@@ -10,7 +18,6 @@ const productsApi = baseApi.injectEndpoints({
       }),
       providesTags: ["products"],
     }),
-
     getSingleProduct: builder.query({
       query: (id) => {
         return {
@@ -20,7 +27,21 @@ const productsApi = baseApi.injectEndpoints({
       },
       providesTags: ["products"],
     }),
+    deleteProduct: builder.mutation({
+      query: (id: string) => {
+        return {
+          url: `products/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery,useGetSingleProductQuery } = productsApi;
+export const {
+  useAddToProductMutation,
+  useGetAllProductsQuery,
+  useGetSingleProductQuery,
+  useDeleteProductMutation
+} = productsApi;
