@@ -11,6 +11,7 @@ export type TOrder = {
   }[];
   totalAmount: number;
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
+  orderStatus:"Pending" | "Success" | "Failed";
   shippingAddress: {
     name: string;
     address: string;

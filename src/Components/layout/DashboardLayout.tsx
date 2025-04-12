@@ -113,6 +113,18 @@ const DashboardLayout = () => {
                   <FaProductHunt className="mr-3" /> Manage Product
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/admin/dashboard/allOrder"
+                  className={({ isActive }) =>
+                    `flex items-center text-lg transition duration-300 ease-in-out ${
+                      isActive ? "text-yellow-400" : "text-white"
+                    }`
+                  }
+                >
+                  <FaProductHunt className="mr-3" /> All Orders 
+                </NavLink>
+              </li>
             </>
           )}
 

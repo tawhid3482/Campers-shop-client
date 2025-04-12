@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import { TProduct } from "@/types/products";
+import { Link } from "react-router-dom";
 
 const ManageProduct = () => {
   const { data, isLoading, isError } = useGetAllProductsQuery({});
@@ -51,9 +52,11 @@ const ManageProduct = () => {
                 <td className="py-3 px-6">{product.stock}</td>
                 <td className="py-3 px-6">{product.category?.name || "N/A"}</td>
                 <td className="py-3 px-6 text-center space-x-2">
+                  <Link to={  `/admin/dashboard/update/${product._id}`}>
                   <Button className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-md">
                     <FaEdit />
                   </Button>
+                  </Link>
                   <Button
                     onClick={() => handleDelete(product._id)}
                     disabled={deletingId === product._id}
