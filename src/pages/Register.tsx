@@ -43,7 +43,8 @@ const Register = () => {
       console.log("User Registered:", res);
 
       toast.success("Successfully Registered!", { id: toastId, duration: 2000 });
-      navigate(`/`);
+      toast.success("Please Login Now !", { id: toastId, duration: 3000 });
+      navigate(`/login`);
     } catch (err) {
       console.error("Registration Error:", err);
       toast.error("Something went wrong. Please try again.", { id: toastId, duration: 2000 });
