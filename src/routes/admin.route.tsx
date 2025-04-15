@@ -30,7 +30,7 @@ export const adminPaths = [
     path: "/admin/dashboard/update/:id",
     element: <UpdateProduct />,
     loader: ({ params }: { params: { id: string } }) =>
-      fetch(`http://localhost:5000/products/${params.id}`)
+      fetch(`https://campers-shop-one.vercel.app/products/${params.id}`)
   },
   
 ];
