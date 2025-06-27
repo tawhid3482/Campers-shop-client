@@ -77,6 +77,18 @@ const DashboardLayout = () => {
             </>
           ) : (
             <>
+            <li>
+                <NavLink
+                  to="/user/dashboard/profile"
+                  className={({ isActive }) =>
+                    `flex items-center text-lg transition duration-300 ease-in-out ${
+                      isActive ? "text-yellow-400" : "text-white"
+                    }`
+                  }
+                >
+                  <FaUser className="mr-3" /> Profile
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/admin/dashboard/adminProfile"
@@ -86,7 +98,7 @@ const DashboardLayout = () => {
                     }`
                   }
                 >
-                  <FaUser className="mr-3" /> Admin Profile
+                  <FaUser className="mr-3" /> Admin Dashboard
                 </NavLink>
               </li>
               <li>
