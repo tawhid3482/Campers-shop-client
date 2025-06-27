@@ -13,52 +13,60 @@ import { useGetAllCategoriesItemsQuery } from "@/redux/features/categories/categ
 const AddProduct = () => {
   const [addToProduct] = useAddToProductMutation();
   const { data: categoryData } = useGetAllCategoriesItemsQuery("");
-  console.log(categoryData)
   const { register, handleSubmit, reset } = useForm<TProduct>();
-  const [preview, setPreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const imgbbKey =import.meta.env.VITE_IMAGE_HOSTING_KEY; 
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
+  const imgbbKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
   const onSubmit = async (data: TProduct) => {
     try {
-      let imageUrl = "";
+      const imageUrls: string[] = [];
 
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append("image", imageFile);
+      if (imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const formData = new FormData();
+          formData.append("image", file);
 
-        const res = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-          formData
-        );
+          const res = await axios.post(
+            `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+            formData
+          );
 
-        const responseData = res.data as { data: { url: string } };
-        imageUrl = responseData.data.url;
+          const resData = res.data as { data: { url: string } };
+          imageUrls.push(resData.data.url);
+        }
       }
 
       const finalData = {
         ...data,
-        image: imageUrl,
+        image: imageUrls, // এখানে images অ্যারে হিসেবে পাঠাচ্ছি
         price: Number(data.price),
         stock: Number(data.stock),
       };
 
+      console.log("Final Data to Submit:", finalData);
       await addToProduct(finalData).unwrap();
       toast.success("Product added successfully");
       reset();
-      setPreview(null);
-      setImageFile(null);
+      setPreviews([]);
+      setImageFiles([]);
     } catch (error) {
       toast.error("Failed to add product");
     }
   };
 
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setImageFile(file);
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const selectedFiles = Array.from(files);
+      setImageFiles(selectedFiles);
+
+      const previewUrls = selectedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviews(previewUrls);
     }
   };
 
@@ -162,21 +170,30 @@ const AddProduct = () => {
         {/* Image Upload */}
         <div>
           <label className="block font-medium text-gray-600 mb-1">
-            Product Image
+            Product Images
           </label>
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={handleImagePreview}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+            className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:bg-green-50
+              file:text-green-700
+              hover:file:bg-green-100"
           />
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-4 w-32 h-32 object-cover rounded-md"
-            />
-          )}
+          <div className="flex gap-4 mt-4 overflow-x-auto">
+            {previews.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt={`Preview ${idx + 1}`}
+                className="w-24 h-24 object-cover rounded-md"
+              />
+            ))}
+          </div>
         </div>
 
         <Button

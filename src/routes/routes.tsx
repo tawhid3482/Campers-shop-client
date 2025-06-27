@@ -59,10 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/products/:id",
         element: (
-          <ProtectedRoute>
+          // <ProtectedRoute>
             <ProductDetails></ProductDetails>
             //{" "}
-          </ProtectedRoute>
+          // </ProtectedRoute>
         ),
       },
       {

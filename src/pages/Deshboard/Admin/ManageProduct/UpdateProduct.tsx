@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import {
 import { TProduct } from "@/types/products";
 
 const UpdateProduct = () => {
-  const { id: productId } = useParams(); // Get productId from the URL
+  const { id: productId } = useParams();
   const {
     data: productData,
     isLoading,
@@ -26,52 +26,60 @@ const UpdateProduct = () => {
   const { data: categoryData } = useGetAllCategoriesItemsQuery("");
   const { register, handleSubmit, reset } = useForm<TProduct>();
 
-  const [preview, setPreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const imgbbKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 
   const currentProductItem = productData?.data;
+
+  const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImageFiles(files);
+    setPreviewImages(previews);
+  };
 
   const onSubmit = async (data: TProduct) => {
     if (!currentProductItem || !productId) return;
 
     try {
-      let imageUrl = currentProductItem.image;
+      let uploadedImages: string[] = [];
 
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append("image", imageFile);
+      if (imageFiles.length > 0) {
+        const uploadPromises = imageFiles.map((file) => {
+          const formData = new FormData();
+          formData.append("image", file);
+          return axios.post(
+            `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
+            formData
+          );
+        });
 
-        const res = await axios.post<{ data: { url: string } }>(
-          `https://api.imgbb.com/1/upload?key=${imgbbKey}`,
-          formData
+        const responses = await Promise.all(uploadPromises);
+        uploadedImages = responses.map(
+          (res) => (res.data as { data: { url: string } }).data.url
         );
-
-        imageUrl = res.data.data.url;
+      } else {
+        uploadedImages = currentProductItem.image || [];
       }
 
       const finalData = {
         ...data,
-        image: imageUrl,
+        image: uploadedImages,
         price: Number(data.price),
         stock: Number(data.stock),
       };
 
       await updateToProduct({ id: productId, data: finalData }).unwrap();
       toast.success("Product updated successfully!");
-      reset(finalData);
-      setPreview(null);
-      setImageFile(null);
+      reset({
+        ...finalData,
+        image: Array.isArray(finalData.image) ? finalData.image[0] || "" : finalData.image,
+      });
+      setPreviewImages([]);
+      setImageFiles([]);
     } catch (error) {
       toast.error("Failed to update product.");
-    }
-  };
-
-  const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setImageFile(file);
     }
   };
 
@@ -91,112 +99,91 @@ const UpdateProduct = () => {
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label className="block font-medium text-gray-600 mb-1">Name</label>
+        <input
+          {...register("name", { required: true })}
+          defaultValue={currentProductItem.name}
+          className="w-full border px-4 py-2 rounded-md"
+          type="text"
+          placeholder="Name"
+        />
+
+        <textarea
+          {...register("description", { required: true })}
+          defaultValue={currentProductItem.description}
+          className="w-full border px-4 py-2 rounded-md"
+          placeholder="Description"
+        />
+
+        <div className="grid grid-cols-2 gap-4">
           <input
-            {...register("name", { required: true })}
-            defaultValue={currentProductItem.name}
+            {...register("price", { required: true })}
+            defaultValue={currentProductItem.price}
+            type="number"
             className="w-full border px-4 py-2 rounded-md"
-            type="text"
+            placeholder="Price"
+          />
+          <input
+            {...register("stock", { required: true })}
+            defaultValue={currentProductItem.stock}
+            type="number"
+            className="w-full border px-4 py-2 rounded-md"
+            placeholder="Stock"
           />
         </div>
 
-        <div>
-          <label className="block font-medium text-gray-600 mb-1">
-            Description
-          </label>
-          <textarea
-            {...register("description", { required: true })}
-            defaultValue={currentProductItem.description}
-            className="w-full border px-4 py-2 rounded-md"
-          />
-        </div>
+        <select
+          {...register("category", { required: true })}
+          defaultValue={currentProductItem.category}
+          className="w-full border px-4 py-2 rounded-md"
+        >
+          <option value="">Select Category</option>
+          {categoryData?.data?.map((cat: any) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block font-medium text-gray-600 mb-1">
-              Price
-            </label>
-            <input
-              {...register("price", { required: true })}
-              defaultValue={currentProductItem.price}
-              type="number"
-               step="0.01"
-              className="w-full border px-4 py-2 rounded-md"
-            />
-          </div>
-          <div>
-            <label className="block font-medium text-gray-600 mb-1">
-              Stock
-            </label>
-            <input
-              {...register("stock", { required: true })}
-              defaultValue={currentProductItem.stock}
-              type="number"
-              className="w-full border px-4 py-2 rounded-md"
-            />
-          </div>
-        </div>
+        <select
+          {...register("productType")}
+          defaultValue={currentProductItem.productType}
+          className="w-full border px-4 py-2 rounded-md"
+        >
+          <option value="regular">Regular</option>
+          <option value="bestSelling">Best Selling</option>
+          <option value="featured">Featured</option>
+        </select>
 
         <div>
           <label className="block font-medium text-gray-600 mb-1">
-            Category
-          </label>
-          <select
-            {...register("category", { required: true })}
-            defaultValue={currentProductItem.category}
-            className="w-full border px-4 py-2 rounded-md"
-          >
-            <option value="">Select a category</option>
-            {categoryData?.data?.map((cat: any) => (
-              <option key={cat._id} value={cat._id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block font-medium text-gray-600 mb-1">
-            Product Type
-          </label>
-          <select
-            {...register("productType")}
-            defaultValue={currentProductItem.productType}
-            className="w-full border px-4 py-2 rounded-md"
-          >
-            <option value="">Select type</option>
-            <option value="regular">Regular</option>
-            <option value="bestSelling">Best Selling</option>
-            <option value="featured">Featured</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block font-medium text-gray-600 mb-1">
-            Product Image
+            Upload Images
           </label>
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={handleImagePreview}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+            className="w-full"
           />
-          {preview ? (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-4 w-32 h-32 object-cover rounded-md"
-            />
-          ) : (
-            currentProductItem?.image && (
-              <img
-                src={currentProductItem.image}
-                alt="Current"
-                className="mt-4 w-32 h-32 object-cover rounded-md"
-              />
-            )
-          )}
+          <div className="flex gap-4 mt-3 flex-wrap">
+            {previewImages.length > 0
+              ? previewImages.map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt="Preview"
+                    className="w-20 h-20 object-cover rounded-md"
+                  />
+                ))
+              : currentProductItem.image?.map((img: string, idx: number) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt="Old"
+                    className="w-20 h-20 object-cover rounded-md"
+                  />
+                ))}
+          </div>
         </div>
 
         <Button
