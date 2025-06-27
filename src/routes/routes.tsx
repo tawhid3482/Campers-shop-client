@@ -14,6 +14,8 @@ import { routeGenerator } from "@/utils/routeGenerator";
 import DashboardLayout from "@/Components/layout/DashboardLayout";
 import { userPaths } from "./user.route";
 import { adminPaths } from "./admin.route";
+import Tips from "@/pages/Tips/Tips";
+import Services from "@/pages/Services/Services";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact></Contact>,
+      },
+      {
+        path: "/tips",
+        element: <Tips></Tips>,
+      },
+      {
+        path: "/services",
+        element: <Services></Services>,
       },
       // protected route
       {

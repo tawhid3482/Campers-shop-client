@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const categories = [
   {
     id: 1,
-    name: "Tents & Shelters",
+    name: "Tents",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJlJIMXiTczxW0O8_CTVbnhVnEnFE27dmxFTx_9ykdnIIssB6FZL180UJ_tVIwryOw1-0&usqp=CAU",
   },
   {
@@ -13,12 +13,12 @@ const categories = [
   },
   {
     id: 3,
-    name: "Camp Cooking",
+    name: "Survival Gear",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc7cva-VgJtH2tVSfKjPKwxynL1FWJKpJqsQ&s",
   },
   {
     id: 4,
-    name: "Hiking Gear",
+    name: "Hiking Boots",
     image: "https://media.istockphoto.com/id/1180121132/photo/top-view-camping-and-hiking-travel-and-hiking-gear-equipment-and-accessories-for-mountain.jpg?s=612x612&w=0&k=20&c=9m8mb5RlWEyHxaA3VXrMOxtivu3_Xzdh7bx0om70sTQ=",
   },
   {

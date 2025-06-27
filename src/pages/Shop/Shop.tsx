@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Input } from "@/Components/ui/input";
 import {
   Select,
@@ -15,13 +15,22 @@ import { useGetAllProductsQuery } from "@/redux/features/products/productsApi";
 import { TProduct } from "@/types/products";
 
 const Shop = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const urlCategory = queryParams.get("category") || "all";
+
   const { data } = useGetAllProductsQuery(undefined);
   const products: TProduct[] = useMemo(() => data?.data || [], [data]);
+  console.log("Products:", products);
 
   const [search, setSearch] = useState<string>("");
   const [category, setCategory] = useState<string>("all");
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
   const [sortOrder, setSortOrder] = useState<string>("");
+
+  useEffect(() => {
+    setCategory(urlCategory);
+  }, [urlCategory]);
 
   const filteredProducts = useMemo(() => {
     return products
@@ -29,7 +38,7 @@ const Shop = () => {
         product.name.toLowerCase().includes(search.toLowerCase())
       )
       .filter((product: TProduct) =>
-        category !== "all" ? product.category?._id === category : true
+        category !== "all" ? product.category?.name === category : true
       )
       .filter(
         (product: TProduct) =>
@@ -47,19 +56,15 @@ const Shop = () => {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        {/* Search Bar */}
         <Input
           placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border border-black p-3 rounded-md shadow-sm focus:ring focus:ring-gray-400 "
+          className="border border-black p-3 rounded-md shadow-sm focus:ring focus:ring-gray-400"
         />
 
-        {/* Price Range Filter */}
         <div>
-          <label className="block text-sm font-semibold mb-1">
-            Price Range
-          </label>
+          <label className="block text-sm font-semibold mb-1">Price Range</label>
           <Slider
             min={0}
             max={1000}
@@ -71,7 +76,6 @@ const Shop = () => {
           </p>
         </div>
 
-        {/* Category Filter */}
         <Select value={category} onValueChange={(value) => setCategory(value)}>
           <SelectTrigger className="border border-black p-3 rounded-md shadow-sm w-full lg:w-44">
             <SelectValue placeholder="Select Category" />
@@ -82,21 +86,17 @@ const Shop = () => {
               .map((p) => p.category)
               .filter(
                 (c, i, self) =>
-                  c?._id && self.findIndex((v) => v?._id === c?._id) === i
+                  c?.name && self.findIndex((v) => v?.name === c?.name) === i
               )
               .map((c) => (
-                <SelectItem key={c?._id} value={c?._id || ""}>
+                <SelectItem key={c?.name} value={c?.name || ""}>
                   {c?.name}
                 </SelectItem>
               ))}
           </SelectContent>
         </Select>
 
-        {/* Sorting */}
-        <Select
-          value={sortOrder}
-          onValueChange={(value) => setSortOrder(value)}
-        >
+        <Select value={sortOrder} onValueChange={(value) => setSortOrder(value)}>
           <SelectTrigger className="border border-black p-3 rounded-md shadow-sm w-full lg:w-44">
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
@@ -106,7 +106,6 @@ const Shop = () => {
           </SelectContent>
         </Select>
 
-        {/* Clear Filters */}
         <Button
           onClick={() => {
             setSearch("");
@@ -120,7 +119,6 @@ const Shop = () => {
         </Button>
       </div>
 
-      {/* Product Grid */}
       {filteredProducts.length === 0 ? (
         <p className="text-center text-gray-500">No products found.</p>
       ) : (
@@ -136,9 +134,7 @@ const Shop = () => {
                 className="w-full h-40 object-cover rounded-md mb-4"
               />
               <CardContent>
-                <h3 className="text-lg font-bold text-gray-800">
-                  {product.name}
-                </h3>
+                <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
                 <p className="text-gray-600">${product.price}</p>
                 <Link
                   to={`/products/${product._id}`}

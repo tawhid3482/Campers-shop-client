@@ -28,6 +28,7 @@ const Checkout = () => {
   // });
 
   const [createOrder] = useCreateOrdersMutation();
+  
   const [createPayments] = useCreatePaymentsMutation();
 
   const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,13 +37,6 @@ const Checkout = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  // const handlePaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setPaymentInfo({
-  //     ...paymentInfo,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
 
   const calculateTotalAmount = () => {
     return cartItems.reduce(

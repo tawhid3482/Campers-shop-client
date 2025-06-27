@@ -38,7 +38,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     console.log("Sending refresh token");
 
     const res = await fetch(
-      "https://campers-shop-one.vercel.app/api/v1/auth/refresh-token",
+      "https://campers-shop-one.vercel.app/api/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",
