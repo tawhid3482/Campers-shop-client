@@ -16,17 +16,32 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
 import { motion } from "framer-motion";
+import { useGetAllPaymentItemsQuery } from "@/redux/features/payment/paymentApi";
+
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F", "#FFBB28"];
 
 const AdminProfile = () => {
-  const { data: stats,  } = useGetAdminStatsQuery("");
+  const { data: stats } = useGetAdminStatsQuery("");
   const adminInfo = stats?.data;
 
-  // Transforming dailyRevenue to match recharts format
+  const { data: paymentHistory } = useGetAllPaymentItemsQuery("");
+
+  // Daily revenue formatting for recharts
   const chartData = adminInfo?.dailyRevenue?.map((item: any) => ({
     date: item._id,
     revenue: item.total,
+  }));
+
+  // Monthly revenue for PieChart
+  const pieData = adminInfo?.monthlyRevenue?.map((item: any) => ({
+    name: item._id,
+    value: item.total,
   }));
 
   return (
@@ -93,7 +108,7 @@ const AdminProfile = () => {
         ))}
       </div>
 
-      {/* Chart */}
+      {/* Daily Revenue Bar Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,6 +125,88 @@ const AdminProfile = () => {
             <Bar dataKey="revenue" fill="#90c63e" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
+      </motion.div>
+
+      {/* Monthly Revenue Pie Chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className="bg-white shadow-lg rounded-2xl p-6"
+      >
+        <h2 className="text-xl font-bold mb-4 text-gray-700">Monthly Revenue</h2>
+        <ResponsiveContainer width="100%" height={350}>
+          <PieChart>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={120}
+              fill="#8884d8"
+              label
+            >
+              {pieData?.map((_:any, index:any) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </motion.div>
+
+      {/* Recent Payments Table (Only 3) */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="bg-white shadow-lg rounded-2xl p-6"
+      >
+        <h2 className="text-xl font-bold mb-4 text-gray-700">Recent Payments</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <thead className="bg-gray-100 text-left">
+              <tr>
+                <th className="px-4 py-2">#</th>
+                <th className="px-4 py-2">User</th>
+                <th className="px-4 py-2">Transaction ID</th>
+                <th className="px-4 py-2">Amount</th>
+                <th className="px-4 py-2">Method</th>
+                <th className="px-4 py-2">Status</th>
+                <th className="px-4 py-2">Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {paymentHistory?.data?.slice(0, 3)?.map((item: any, index: number) => (
+                <tr key={item._id} className="hover:bg-gray-50 transition">
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{item.user?.name || "N/A"}</td>
+                  <td className="px-4 py-2">{item.transactionId}</td>
+                  <td className="px-4 py-2 text-green-600 font-medium">
+                    ${item.amount?.toFixed(2)}
+                  </td>
+                  <td className="px-4 py-2">{item.paymentMethod}</td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full font-semibold ${
+                        item.status === "Success"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </motion.div>
     </div>
   );
