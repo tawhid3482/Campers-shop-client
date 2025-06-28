@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -16,13 +15,14 @@ import { Button } from "@/Components/ui/button";
 import { Star, X, SlidersHorizontal } from "lucide-react";
 import { useGetAllProductsQuery } from "@/redux/features/products/productsApi";
 import { TProduct } from "@/types/products";
+import SkeletonCard from "./ShopSkeleton"; // skeleton import
 
 const Shop = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const urlCategory = queryParams.get("category") || "all";
 
-  const { data } = useGetAllProductsQuery(undefined);
+  const { data, isLoading } = useGetAllProductsQuery(undefined);
   const products: TProduct[] = useMemo(() => data?.data || [], [data]);
 
   const [search, setSearch] = useState<string>("");
@@ -145,7 +145,13 @@ const Shop = () => {
           </Button>
         </div>
 
-        {filteredProducts.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <p className="text-center text-gray-500 text-lg mt-10">
             No products found.
           </p>
@@ -236,11 +242,20 @@ const SidebarContent = ({
   <div className="space-y-6">
     <div>
       <label className="text-sm font-medium">Search</label>
-      <Input placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} />
+      <Input
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
     </div>
     <div>
       <label className="text-sm font-medium">Price Range</label>
-      <Slider min={0} max={1000} value={priceRange} onValueChange={(value) => setPriceRange(value as number[])} />
+      <Slider
+        min={0}
+        max={1000}
+        value={priceRange}
+        onValueChange={(value) => setPriceRange(value as number[])}
+      />
       <p className="text-sm mt-1 text-gray-500">
         ${priceRange[0]} - ${priceRange[1]}
       </p>
@@ -255,8 +270,11 @@ const SidebarContent = ({
           <SelectItem value="all">All Categories</SelectItem>
           {products
             .map((p: TProduct) => p.category)
-            .filter((c:any, i:any, self:any) => c?.name && self.findIndex((v:any) => v?.name === c?.name) === i)
-            .map((c:any) => (
+            .filter(
+              (c: any, i: any, self: any) =>
+                c?.name && self.findIndex((v: any) => v?.name === c?.name) === i
+            )
+            .map((c: any) => (
               <SelectItem key={c?.name} value={c?.name || ""}>
                 {c?.name}
               </SelectItem>
