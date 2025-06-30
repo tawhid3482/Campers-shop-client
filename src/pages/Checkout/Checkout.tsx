@@ -52,12 +52,11 @@ const Checkout = () => {
       orderId,
       paymentMethod: "Card",
       transactionId: "",
-      status: "Pending",
+      status: "Success",
       amount: calculateTotalAmount(),
     };
     try {
       const res = await createPayments(paymentPayload).unwrap();
-      console.log("Payment created:", res);
       if (res?.data) {
         window.location.replace(res.data);
       }
@@ -82,8 +81,6 @@ const Checkout = () => {
 
     try {
       const orderResponse = await createOrder(orderPayload).unwrap();
-      console.log("Order created:", orderResponse);
-      console.log("Order created_id:", orderResponse?.data?._id);
       if (orderResponse?.data?._id) {
         await handlePayment(orderResponse?.data?._id);
       }
@@ -167,9 +164,9 @@ const Checkout = () => {
         <div className="text-center mt-6">
           <button
             onClick={handlePlaceOrder}
-            className="w-full bg-[#90c63e] text-white py-3 rounded-md text-xl hover:bg-[#833d47] transition duration-300"
+            className="w-full bg-green-600 text-white py-3 rounded-md text-xl hover:bg-[#833d47] transition duration-300"
           >
-            Place Order
+            Place Order SSL-Commerz
           </button>
         </div>
       </div>

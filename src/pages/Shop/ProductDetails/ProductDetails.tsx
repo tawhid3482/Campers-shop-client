@@ -32,7 +32,6 @@ const ProductDetails = () => {
   const [addReviews] = useAddReviewsMutation();
 
   const product = data?.data || null;
-  console.log("Product Details:", product);
   const productReviews: TReviews[] =
     reviews?.data?.filter((review: TReviews) => review.product._id === id) || [];
 
@@ -157,12 +156,12 @@ const ProductDetails = () => {
           <p className="text-gray-700 text-lg leading-relaxed">{product.description}</p>
 
           {/* Price */}
-          <p className="text-3xl font-bold text-[#90c63e]">
-            ${product.price.toFixed(2)}{" "}
+          <p className="text-3xl font-bold text-green-600">
+            ${product?.price?.toFixed(2)}{" "}
             <span className="text-base font-normal text-gray-500">per item</span>
           </p>
           <p className="text-xl font-bold text-[#833d47]">
-           Rating: {product.rating.toFixed(1)} ⭐️
+           Rating: {product?.rating?.toFixed(1)} ⭐️
           </p>
 
           {/* Stock */}
@@ -205,7 +204,7 @@ const ProductDetails = () => {
               Add to Cart
             </Button>
             <Link to="/checkout" className="w-full sm:w-auto">
-              <Button className="bg-gradient-to-r from-[#90c63e] to-[#6c8e1e] hover:from-[#a1ce43] hover:to-[#4b6010] text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition w-full">
+              <Button className="bg-gradient-to-r from-green-600 to-[#6c8e1e] hover:from-[#a1ce43] hover:to-[#4b6010] text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition w-full">
                 Buy Now
               </Button>
             </Link>
@@ -227,7 +226,7 @@ const ProductDetails = () => {
               />
             ))}
             <span className="ml-3 text-xl font-semibold text-gray-800">
-              {averageRating.toFixed(1)} / 5
+              {averageRating?.toFixed(1)} / 5
             </span>
           </div>
           <span className="text-gray-500 text-lg">({productReviews.length} reviews)</span>
@@ -300,7 +299,7 @@ const ProductDetails = () => {
       {/* Suggested Products */}
       {suggestedProducts?.length > 0 && (
         <section>
-          <h2 className="text-3xl font-bold mb-6 text-[#90c63e]">Suggested Products</h2>
+          <h2 className="text-3xl font-bold mb-6 text-green-600">Suggested Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {suggestedProducts.map((item: any) => (
               <Link
@@ -314,7 +313,7 @@ const ProductDetails = () => {
                   className="w-full h-48 object-cover rounded-xl mb-4"
                 />
                 <p className="text-xl font-semibold text-gray-900">{item.name}</p>
-                <p className="text-[#833d47] font-bold text-lg">${item.price.toFixed(2)}</p>
+                <p className="text-[#833d47] font-bold text-lg">${item?.price?.toFixed(2)}</p>
               </Link>
             ))}
           </div>

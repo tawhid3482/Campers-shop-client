@@ -9,7 +9,6 @@ const PaymentHistory = () => {
   const { data: paymentData, isLoading } = useGetUserPaymentQuery(
     user?.userEmail || ""
   );
-  console.log(paymentData);
 
   
   const payment =

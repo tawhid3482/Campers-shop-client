@@ -147,7 +147,7 @@ const Cart = () => {
                 <Button
                   onClick={() => handleDelete(item._id)}
                   variant="outline"
-                  className="bg-[#833d47] hover:bg-[#90c63e] text-white"
+                  className="bg-[#833d47] hover:bg-green-600 text-white"
                 >
                   <Trash2 className="w-5 h-5" />
                 </Button>
@@ -171,7 +171,7 @@ const Cart = () => {
               .toFixed(2)}
           </p>
           <Link to="/checkout">
-            <Button className="bg-[#90c63e] hover:bg-green-700 text-white">
+            <Button className="bg-green-600 hover:bg-green-700 text-white">
               Proceed to Checkout
             </Button>
           </Link>

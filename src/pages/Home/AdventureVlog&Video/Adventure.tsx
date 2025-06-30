@@ -7,12 +7,7 @@ const Adventure = () => {
         { id: 3, title: "Top 10 Campsites", url: "https://www.youtube.com/embed/PavYAOpVpJI?si=4p7_LIhrPV-rlON-" },
     ]);
 
-    const [testimonials] = useState([
-        { id: 1, name: "John Doe", text: "The best camping gear I’ve ever used!" },
-        { id: 2, name: "Jane Smith", text: "Great quality products and fast delivery." },
-        { id: 3, name: "thomas asi", text: "Great quality products and fast delivery." },
-    ]);
-
+ 
 
 
     return (
@@ -20,7 +15,7 @@ const Adventure = () => {
             {/* Hero Section */}
             <div className="relative h-60  flex items-center justify-center bg-cover bg-center text-[#833d47] text-2xl font-bold"
                 style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?camping,adventure')" }}>
-                <div className="bg-[#90c63e] bg-opacity-50 p-6 rounded-xl">
+                <div className="bg-green-600 bg-opacity-50 p-6 rounded-xl">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-center">Adventure & Travel Vlogs</h1>
                     <p className="text-lg text-center mt-2">Explore the best camping and travel experiences!</p>
                 </div>
@@ -44,18 +39,7 @@ const Adventure = () => {
                 </div>
             </div>
 
-            {/* Testimonials Section */}
-            <div className="mt-12">
-                <h2 className="text-3xl font-bold text-center mb-6 text-[#833d47]">What Our Customers Say</h2>
-                <div className="flex flex-col md:flex-row gap-6 justify-center">
-                    {testimonials.map(testimonial => (
-                        <div key={testimonial.id} className="p-6 bg-white text-[#833d47] shadow-md rounded-lg text-center w-full md:w-1/3">
-                            <p className="text-gray-700 italic">"{testimonial.text}"</p>
-                            <h3 className="text-xl font-semibold mt-2">{testimonial.name}</h3>
-                        </div>
-                    ))}
-                </div>
-            </div>
+       
 
            
         </div>

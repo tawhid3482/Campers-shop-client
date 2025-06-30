@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-[400px] flex items-center justify-center bg-gradient-to-r from-[#90c63e] to-[#a07178] text-white">
+    <div className="relative w-full h-[400px] flex items-center justify-center bg-gradient-to-r from-green-600 to-[#a07178] text-white">
       {/* Background Overlay */}
       <div
         className="absolute inset-0 bg-black bg-opacity-30"
@@ -49,12 +49,12 @@ const Hero = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
         >
           <Link to="/shop">
-            <button className="px-6 py-3 bg-[#90c63e] hover:bg-[#833d47] text-white font-semibold rounded-lg shadow-md transition">
+            <button className="p-2 bg-green-600 hover:bg-[#833d47] text-white font-semibold rounded-lg shadow-md transition">
               Shop Now
             </button>
           </Link>
           <Link to="/about">
-            <button className="px-6 py-3 border border-white hover:bg-white hover:text-[#a07178] text-white font-semibold rounded-lg transition">
+            <button className="p-2 border border-white hover:bg-white hover:text-[#a07178] text-white font-semibold rounded-lg transition">
               Explore More
             </button>
           </Link>

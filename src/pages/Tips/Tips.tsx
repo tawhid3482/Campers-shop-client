@@ -4,31 +4,31 @@ import { TentTree, Compass, Droplet, CloudSun, Leaf } from "lucide-react";
 const tipsData = [
   {
     step: "Step 1",
-    icon: <TentTree className="text-[#90c63e] w-10 h-10" />,
+    icon: <TentTree className="text-green-600 w-10 h-10" />,
     title: "Choose Your Tent Wisely",
     description: "Start by selecting a tent that fits the season, location, and group size.",
   },
   {
     step: "Step 2",
-    icon: <Compass className="text-[#90c63e] w-10 h-10" />,
+    icon: <Compass className="text-green-600 w-10 h-10" />,
     title: "Plan Your Gear & Route",
     description: "Prepare your essentials: backpack, compass, and route plan.",
   },
   {
     step: "Step 3",
-    icon: <Droplet className="text-[#90c63e] w-10 h-10" />,
+    icon: <Droplet className="text-green-600 w-10 h-10" />,
     title: "Stock Food & Water",
     description: "Pack easy-to-cook meals and plenty of water for hydration.",
   },
   {
     step: "Step 4",
-    icon: <CloudSun className="text-[#90c63e] w-10 h-10" />,
+    icon: <CloudSun className="text-green-600 w-10 h-10" />,
     title: "Check the Weather",
     description: "Weather awareness helps prevent uncomfortable or dangerous trips.",
   },
   {
     step: "Step 5",
-    icon: <Leaf className="text-[#90c63e] w-10 h-10" />,
+    icon: <Leaf className="text-green-600 w-10 h-10" />,
     title: "Leave No Trace",
     description: "Respect nature, clean your campsite, and follow eco-friendly rules.",
   },
@@ -60,16 +60,16 @@ const Tips = () => {
           >
             {/* Card 1 */}
             <motion.div
-              className="flex-1 relative group bg-white p-8 rounded-3xl shadow-xl border-l-4 border-[#90c63e] overflow-hidden hover:shadow-2xl transition-all duration-300"
+              className="flex-1 relative group bg-white p-8 rounded-3xl shadow-xl border-l-4 border-green-600 overflow-hidden hover:shadow-2xl transition-all duration-300"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: pairIndex * 0.3, duration: 0.6 }}
               viewport={{ once: true }}
             >
               {/* Horizontal line */}
-              <span className="absolute top-0 left-0 w-0 group-hover:w-full h-[3px] bg-[#90c63e] transition-all duration-500 ease-in-out" />
+              <span className="absolute top-0 left-0 w-0 group-hover:w-full h-[3px] bg-green-600 transition-all duration-500 ease-in-out" />
               {/* Vertical line */}
-              <span className="absolute top-0 left-0 h-0 group-hover:h-full w-[3px] bg-[#90c63e] transition-all duration-500 ease-in-out delay-100" />
+              <span className="absolute top-0 left-0 h-0 group-hover:h-full w-[3px] bg-green-600 transition-all duration-500 ease-in-out delay-100" />
 
               <div className="mb-3 text-sm font-semibold text-[#833d47] uppercase tracking-wider">
                 {pair[0].step}
@@ -77,7 +77,7 @@ const Tips = () => {
               <div className="flex items-start gap-5">
                 <div className="flex-shrink-0">{pair[0].icon}</div>
                 <div>
-                  <h3 className="text-2xl font-bold text-[#90c63e] mb-2">
+                  <h3 className="text-2xl font-bold text-green-600 mb-2">
                     {pair[0].title}
                   </h3>
                   <p className="text-gray-700 text-lg leading-relaxed">
@@ -89,22 +89,22 @@ const Tips = () => {
 
             {/* Vertical line between cards - only if pair has 2 cards */}
             {pair.length === 2 && (
-              <div className="hidden sm:block w-[3px] bg-[#90c63e] opacity-50 rounded-full mx-4" />
+              <div className="hidden sm:block w-[3px] bg-green-600 opacity-50 rounded-full mx-4" />
             )}
 
             {/* Card 2 if exists */}
             {pair.length === 2 && (
               <motion.div
-                className="flex-1 relative group bg-white p-8 rounded-3xl shadow-xl border-l-4 border-[#90c63e] overflow-hidden hover:shadow-2xl transition-all duration-300"
+                className="flex-1 relative group bg-white p-8 rounded-3xl shadow-xl border-l-4 border-green-600 overflow-hidden hover:shadow-2xl transition-all duration-300"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: pairIndex * 0.3 + 0.15, duration: 0.6 }}
                 viewport={{ once: true }}
               >
                 {/* Horizontal line */}
-                <span className="absolute top-0 left-0 w-0 group-hover:w-full h-[3px] bg-[#90c63e] transition-all duration-500 ease-in-out" />
+                <span className="absolute top-0 left-0 w-0 group-hover:w-full h-[3px] bg-green-600 transition-all duration-500 ease-in-out" />
                 {/* Vertical line */}
-                <span className="absolute top-0 left-0 h-0 group-hover:h-full w-[3px] bg-[#90c63e] transition-all duration-500 ease-in-out delay-100" />
+                <span className="absolute top-0 left-0 h-0 group-hover:h-full w-[3px] bg-green-600 transition-all duration-500 ease-in-out delay-100" />
 
                 <div className="mb-3 text-sm font-semibold text-[#833d47] uppercase tracking-wider">
                   {pair[1].step}
@@ -112,7 +112,7 @@ const Tips = () => {
                 <div className="flex items-start gap-5">
                   <div className="flex-shrink-0">{pair[1].icon}</div>
                   <div>
-                    <h3 className="text-2xl font-bold text-[#90c63e] mb-2">
+                    <h3 className="text-2xl font-bold text-green-600 mb-2">
                       {pair[1].title}
                     </h3>
                     <p className="text-gray-700 text-lg leading-relaxed">

@@ -55,7 +55,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-[#90c63e] p-4 text-white sticky top-0 z-50 shadow-lg">
+    <nav className="bg-green-600 p-1 text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -66,14 +66,14 @@ const Navbar = () => {
         </div>
 
         {/* Nav Links - Desktop */}
-        <ul className="hidden lg:flex items-center space-x-4 md:space-x-6 lg:space-x-8">
+        <ul className="hidden lg:flex items-center space-x-3 md:space-x-5 lg:space-x-7">
           {navItems.map(({ name, path }) => {
             const isActive = location.pathname === path;
             return (
               <li key={name} className="relative group">
                 <NavLink
                   to={path}
-                  className={`px-4 py-2 rounded transition duration-200 ${
+                  className={`p-1 rounded transition duration-200 ${
                     isActive
                       ? "bg-[#833d47] text-white"
                       : "hover:bg-[#833d47] hover:text-white"
@@ -153,7 +153,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="px-3 py-2 bg-[#833d47] hover:bg-[#3b4927] text-white rounded transition"
+                className="p-1 bg-[#833d47] hover:bg-[#3b4927] text-white rounded transition"
               >
                 Login
               </Link>
@@ -178,7 +178,7 @@ const Navbar = () => {
                   <NavLink
                     to={path}
                     className={`block px-4 py-2 rounded transition duration-200 ${
-                      isActive ? "bg-[#90c63e]" : "hover:bg-[#90c63e]"
+                      isActive ? "bg-green-600" : "hover:bg-green-600"
                     }`}
                   >
                     {name}
@@ -191,7 +191,7 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/user/dashboard/profile"
-                    className="block px-4 py-2 hover:bg-[#90c63e]"
+                    className="block px-4 py-2 hover:bg-green-600"
                   >
                     Profile
                   </Link>
@@ -199,7 +199,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={() => dispatch(logout())}
-                    className="block w-full px-4 py-2 hover:bg-[#90c63e]"
+                    className="block w-full px-4 py-2 hover:bg-green-600"
                   >
                     Logout
                   </button>
@@ -209,7 +209,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/login"
-                  className="block px-4 py-2 hover:bg-[#90c63e]"
+                  className="block px-4 py-2 hover:bg-green-600"
                 >
                   Login
                 </Link>

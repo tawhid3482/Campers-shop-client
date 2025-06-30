@@ -78,6 +78,8 @@ const UpdateProduct = () => {
       });
       setPreviewImages([]);
       setImageFiles([]);
+      
+
     } catch (error) {
       toast.error("Failed to update product.");
     }
@@ -188,7 +190,7 @@ const UpdateProduct = () => {
 
         <Button
           type="submit"
-          className="w-full bg-[#90c63e] hover:bg-[#7ab134] text-white font-semibold py-2 rounded-md"
+          className="w-full bg-green-600 hover:bg-[#7ab134] text-white font-semibold py-2 rounded-md"
         >
           Update Product
         </Button>

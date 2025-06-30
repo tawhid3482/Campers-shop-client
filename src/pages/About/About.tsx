@@ -13,7 +13,7 @@ const About = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
-          <div className="bg-[#90c63e] text-white p-6 rounded-lg shadow-md">
+          <div className="bg-green-600 text-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-3">Our Mission</h2>
             <p>
               At Camper-Shop, we strive to provide high-quality camping and
@@ -22,7 +22,7 @@ const About = () => {
             </p>
           </div>
 
-          <div className="bg-[#90c63e] text-white p-6 rounded-lg shadow-md">
+          <div className="bg-green-600 text-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-3">Why Choose Us?</h2>
             <ul className="list-disc list-inside">
               <li>Premium quality outdoor gear</li>

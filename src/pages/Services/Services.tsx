@@ -12,31 +12,31 @@ import {
 const servicesDetails = [
   {
     title: "Comprehensive Camping Gear",
-    icon: <TentTree className="w-8 h-8 text-[#90c63e]" />,
+    icon: <TentTree className="w-8 h-8 text-green-600" />,
     description:
       "We provide a wide variety of camping equipment including tents, sleeping bags, backpacks, cooking tools, and more. All products are high quality and eco-friendly.",
   },
   {
     title: "Expert Guidance & Tips",
-    icon: <Compass className="w-8 h-8 text-[#90c63e]" />,
+    icon: <Compass className="w-8 h-8 text-green-600" />,
     description:
       "Our team shares useful camping tips and personalized advice to help you plan your trips.",
   },
   {
     title: "Fast & Secure Shipping",
-    icon: <Droplet className="w-8 h-8 text-[#90c63e]" />,
+    icon: <Droplet className="w-8 h-8 text-green-600" />,
     description:
       "Reliable shipping ensures timely delivery of your orders safely to your door.",
   },
   {
     title: "30-Day Hassle-Free Return Policy",
-    icon: <CloudSun className="w-8 h-8 text-[#90c63e]" />,
+    icon: <CloudSun className="w-8 h-8 text-green-600" />,
     description:
       "Return or exchange items within 30 days of delivery. Our support will guide you through a smooth process.",
   },
   {
     title: "Dedicated Customer Support",
-    icon: <Leaf className="w-8 h-8 text-[#90c63e]" />,
+    icon: <Leaf className="w-8 h-8 text-green-600" />,
     description:
       "Our support team is available 24/7 to assist you with orders or camping advice.",
   },
@@ -104,7 +104,7 @@ const Services = () => {
               key={idx}
               className="flex items-start space-x-6 p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition cursor-default"
             >
-              <div className="flex-shrink-0 bg-[#90c63e] rounded-full p-3 flex items-center justify-center">
+              <div className="flex-shrink-0 bg-green-600 rounded-full p-3 flex items-center justify-center">
                 {service.icon}
               </div>
               <div>
@@ -133,9 +133,9 @@ const Services = () => {
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-32 h-32 rounded-full object-cover mb-6 border-4 border-[#90c63e] shadow-sm"
+                className="w-32 h-32 rounded-full object-cover mb-6 border-4 border-green-600 shadow-sm"
               />
-              <h3 className="text-2xl font-semibold text-[#90c63e] mb-1">{member.name}</h3>
+              <h3 className="text-2xl font-semibold text-green-600 mb-1">{member.name}</h3>
               <p className="text-[#833d47] font-medium mb-4">{member.role}</p>
               <p className="text-gray-700 max-w-xl">{member.bio}</p>
 
@@ -146,7 +146,7 @@ const Services = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
-                  className="text-[#90c63e] hover:text-[#833d47] transition"
+                  className="text-green-600 hover:text-[#833d47] transition"
                 >
                   <Twitter className="w-6 h-6" />
                 </a>
@@ -155,7 +155,7 @@ const Services = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="text-[#90c63e] hover:text-[#833d47] transition"
+                  className="text-green-600 hover:text-[#833d47] transition"
                 >
                   <Linkedin className="w-6 h-6" />
                 </a>
@@ -164,7 +164,7 @@ const Services = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="text-[#90c63e] hover:text-[#833d47] transition"
+                  className="text-green-600 hover:text-[#833d47] transition"
                 >
                   <Instagram className="w-6 h-6" />
                 </a>

@@ -52,7 +52,7 @@ const Category = () => {
                 className="w-full h-56 object-cover transform group-hover:scale-110 transition duration-300"
               />
               <div className="absolute inset-0 bg-opacity-30 flex items-center justify-center">
-                <h3 className="text-[#90c63e] text-xl font-semibold group-hover:text-yellow-400 transition">
+                <h3 className="text-green-600 text-xl font-semibold group-hover:text-yellow-400 transition">
                   {category.name}
                 </h3>
               </div>

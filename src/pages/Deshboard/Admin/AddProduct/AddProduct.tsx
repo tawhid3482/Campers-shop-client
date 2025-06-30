@@ -46,7 +46,6 @@ const AddProduct = () => {
         stock: Number(data.stock),
       };
 
-      console.log("Final Data to Submit:", finalData);
       await addToProduct(finalData).unwrap();
       toast.success("Product added successfully");
       reset();
@@ -198,7 +197,7 @@ const AddProduct = () => {
 
         <Button
           type="submit"
-          className="w-full bg-[#90c63e] hover:bg-[#7ab134] text-white font-semibold py-2 rounded-md"
+          className="w-full bg-green-600 hover:bg-[#7ab134] text-white font-semibold py-2 rounded-md"
         >
           Add Product
         </Button>
