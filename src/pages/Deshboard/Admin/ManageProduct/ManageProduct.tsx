@@ -1,5 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useDeleteProductMutation, useGetAllProductsQuery } from "@/redux/features/products/productsApi";
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+} from "@/redux/features/products/productsApi";
 import { Button } from "@/Components/ui/button";
 import { motion } from "framer-motion";
 import { FaEdit, FaTrash, FaSearch } from "react-icons/fa";
@@ -60,29 +63,33 @@ const ManageProduct = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-700 mb-6 text-center">
-        Manage Products
-      </h2>
+      <div className="md:flex  md:justify-between md:items-center ">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-700 mb-6 text-center">
+          Manage Products
+        </h2>
 
-      {/* Search Bar */}
-      <div className="flex justify-center mb-6 px-2 sm:px-0">
-        <div className="relative w-full max-w-md">
-          <input
-            type="text"
-            placeholder="Search products by name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-full border border-gray-300 px-4 py-3 pl-12 shadow-sm
+        {/* Search Bar */}
+        <div className="flex justify-center mb-6 px-2 sm:px-0">
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search products by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-full border border-gray-300 px-4 py-3 pl-12 shadow-sm
               focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent
               transition text-sm sm:text-base"
-          />
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+            />
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+          </div>
         </div>
       </div>
 
       {/* Loading and Error */}
       {isLoading && <p className="text-center text-gray-500">Loading...</p>}
-      {isError && <p className="text-center text-red-500">Failed to load products.</p>}
+      {isError && (
+        <p className="text-center text-red-500">Failed to load products.</p>
+      )}
 
       {/* Table wrapper for horizontal scroll on small devices */}
       <div className="overflow-x-auto rounded-lg shadow-md">
@@ -93,14 +100,21 @@ const ManageProduct = () => {
               <th className="py-3 px-4 text-left text-xs sm:text-sm">Name</th>
               <th className="py-3 px-4 text-left text-xs sm:text-sm">Price</th>
               <th className="py-3 px-4 text-left text-xs sm:text-sm">Stock</th>
-              <th className="py-3 px-4 text-left text-xs sm:text-sm">Category</th>
-              <th className="py-3 px-4 text-center text-xs sm:text-sm">Actions</th>
+              <th className="py-3 px-4 text-left text-xs sm:text-sm">
+                Category
+              </th>
+              <th className="py-3 px-4 text-center text-xs sm:text-sm">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {paginatedProducts.length === 0 && !isLoading ? (
               <tr>
-                <td colSpan={6} className="text-center py-6 text-gray-500 text-sm sm:text-base">
+                <td
+                  colSpan={6}
+                  className="text-center py-6 text-gray-500 text-sm sm:text-base"
+                >
                   No products found.
                 </td>
               </tr>
@@ -125,20 +139,28 @@ const ManageProduct = () => {
                       />
                     )}
                   </td>
-                  <td className="py-2 px-4 font-medium text-sm sm:text-base">{product.name}</td>
-                  <td className="py-2 px-4 text-sm sm:text-base">${product.price.toFixed(2)}</td>
-                  <td className="py-2 px-4 text-sm sm:text-base">{product.stock}</td>
-                  <td className="py-2 px-4 text-sm sm:text-base">{product.category?.name || "N/A"}</td>
-                  <td className="py-2 px-4 text-center space-x-1 sm:space-x-2">
+                  <td className="py-2 px-4 font-medium text-sm sm:text-base">
+                    {product.name}
+                  </td>
+                  <td className="py-2 px-4 text-sm sm:text-base">
+                    ${product.price.toFixed(2)}
+                  </td>
+                  <td className="py-2 px-4 text-sm sm:text-base">
+                    {product.stock}
+                  </td>
+                  <td className="py-2 px-4 text-sm sm:text-base">
+                    {product.category?.name || "N/A"}
+                  </td>
+                  <td className="p-1 text-center space-x-1 sm:space-x-2">
                     <Link to={`/admin/dashboard/update/${product._id}`}>
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2 py-1 rounded-full shadow">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm p-1 rounded-full shadow">
                         <FaEdit />
                       </Button>
                     </Link>
                     <Button
                       onClick={() => handleDelete(product._id)}
                       disabled={deletingId === product._id}
-                      className="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm px-2 py-1 rounded-full shadow"
+                      className="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm p-1 rounded-full shadow"
                     >
                       {deletingId === product._id ? "Deleting..." : <FaTrash />}
                     </Button>

@@ -54,6 +54,11 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const profilePath =
+    user?.role === "admin"
+      ? "/admin/dashboard/adminProfile"
+      : "/user/dashboard/profile";
+
   return (
     <nav className="bg-green-600 p-1 text-white sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
@@ -82,7 +87,6 @@ const Navbar = () => {
                   {name}
                 </NavLink>
 
-                {/* Mega menu for Shop */}
                 {name === "Shop" && (
                   <div className="absolute left-0 top-full hidden group-hover:block bg-white text-black py-3 px-6 rounded shadow-lg w-72 z-50">
                     <ul className="space-y-2">
@@ -104,7 +108,7 @@ const Navbar = () => {
           })}
         </ul>
 
-        {/* Right side actions */}
+        {/* Right Actions */}
         <div className="flex items-center space-x-2 md:space-x-4 lg:space-x-6">
           {/* Cart */}
           <Link
@@ -117,7 +121,7 @@ const Navbar = () => {
             <ShoppingCart size={22} className="text-white" />
           </Link>
 
-          {/* Profile Dropdown */}
+          {/* Profile Dropdown - Desktop */}
           <div className="hidden md:flex relative" ref={dropdownRef}>
             {user ? (
               <div className="relative">
@@ -132,7 +136,7 @@ const Navbar = () => {
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-44 bg-white text-black rounded-lg shadow-md z-50">
                     <Link
-                      to="/user/dashboard/profile"
+                      to={profilePath}
                       onClick={() => setDropdownOpen(false)}
                       className="block px-4 py-2 rounded-3xl hover:bg-gray-300"
                     >
@@ -190,7 +194,7 @@ const Navbar = () => {
               <>
                 <li>
                   <Link
-                    to="/user/dashboard/profile"
+                    to={profilePath}
                     className="block px-4 py-2 hover:bg-green-600"
                   >
                     Profile

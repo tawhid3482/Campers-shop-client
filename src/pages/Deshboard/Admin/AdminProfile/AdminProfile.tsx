@@ -29,23 +29,41 @@ const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#00C49F", "#FFBB28"
 const AdminProfile = () => {
   const { data: stats } = useGetAdminStatsQuery("");
   const adminInfo = stats?.data;
-
   const { data: paymentHistory } = useGetAllPaymentItemsQuery("");
 
-  // Daily revenue formatting for recharts
   const chartData = adminInfo?.dailyRevenue?.map((item: any) => ({
     date: item._id,
     revenue: item.total,
   }));
 
-  // Monthly revenue for PieChart
   const pieData = adminInfo?.monthlyRevenue?.map((item: any) => ({
     name: item._id,
     value: item.total,
   }));
 
+  const statsCards = [
+    {
+      icon: <FaMoneyBill className="text-green-500 text-3xl" />, label: "Total Revenue", value: `$${adminInfo?.totalRevenue?.toFixed(2)}`,
+    },
+    {
+      icon: <FaUsers className="text-blue-500 text-3xl" />, label: "Total Users", value: adminInfo?.totalUsers,
+    },
+    {
+      icon: <FaClipboardList className="text-yellow-500 text-3xl" />, label: "Total Orders", value: adminInfo?.totalOrders,
+    },
+    {
+      icon: <FaCheckCircle className="text-green-600 text-3xl" />, label: "Confirmed Orders", value: adminInfo?.totalConfirmedOrders,
+    },
+    {
+      icon: <FaClock className="text-orange-400 text-3xl" />, label: "Pending Orders", value: adminInfo?.pendingOrders,
+    },
+    {
+      icon: <FaClock className="text-[#692f38] text-3xl" />, label: "Shipping Orders", value: adminInfo?.shippingOrders,
+    },
+  ];
+
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 space-y-10">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -55,52 +73,20 @@ const AdminProfile = () => {
         Admin Dashboard Overview
       </motion.h1>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          {
-            icon: <FaMoneyBill className="text-green-500 text-2xl" />,
-            label: "Total Revenue",
-            value: `$${adminInfo?.totalRevenue?.toFixed(2)}`,
-          },
-          {
-            icon: <FaUsers className="text-blue-500 text-2xl" />,
-            label: "Total Users",
-            value: adminInfo?.totalUsers,
-          },
-          {
-            icon: <FaClipboardList className="text-yellow-500 text-2xl" />,
-            label: "Total Orders",
-            value: adminInfo?.totalOrders,
-          },
-          {
-            icon: <FaCheckCircle className="text-green-600 text-2xl" />,
-            label: "Confirmed Orders",
-            value: adminInfo?.totalConfirmedOrders,
-          },
-          {
-            icon: <FaClock className="text-orange-400 text-2xl" />,
-            label: "Pending Orders",
-            value: adminInfo?.pendingOrders,
-          },
-          {
-            icon: <FaClock className="text-[#692f38] text-2xl" />,
-            label: "Shipping Orders",
-            value: adminInfo?.shippingOrders,
-          },
-        ].map((stat, idx) => (
+        {statsCards.map((stat, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
           >
-            <Card className="bg-white shadow-lg rounded-2xl p-4 hover:shadow-xl transition-shadow duration-300">
-              <CardContent className="flex items-center gap-4">
+            <Card className="bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl">
+              <CardContent className="flex items-center gap-4 p-5">
                 {stat.icon}
                 <div>
-                  <p className="text-gray-500 text-sm">{stat.label}</p>
-                  <p className="text-xl font-semibold">{stat.value}</p>
+                  <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
+                  <p className="text-xl font-semibold text-gray-800">{stat.value}</p>
                 </div>
               </CardContent>
             </Card>
@@ -108,61 +94,59 @@ const AdminProfile = () => {
         ))}
       </div>
 
-      {/* Daily Revenue Bar Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="bg-white shadow-lg rounded-2xl p-6"
-      >
-        <h2 className="text-xl font-bold mb-4 text-gray-700">Daily Revenue</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
-            <Bar dataKey="revenue" fill="#90c63e" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </motion.div>
+      <div className="flex flex-col md:flex-row gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="bg-white shadow-md rounded-xl p-6 w-full md:w-1/2"
+        >
+          <h2 className="text-xl font-bold mb-4 text-gray-700">Daily Revenue</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+              <Bar dataKey="revenue" fill="#90c63e" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </motion.div>
 
-      {/* Monthly Revenue Pie Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="bg-white shadow-lg rounded-2xl p-6"
-      >
-        <h2 className="text-xl font-bold mb-4 text-gray-700">Monthly Revenue</h2>
-        <ResponsiveContainer width="100%" height={350}>
-          <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={120}
-              fill="#8884d8"
-              label
-            >
-              {pieData?.map((_:any, index:any) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="bg-white shadow-md rounded-xl p-6 w-full md:w-1/2"
+        >
+          <h2 className="text-xl font-bold mb-4 text-gray-700">Monthly Revenue</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                label
+              >
+                {pieData?.map((_: any, index: number) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </motion.div>
+      </div>
 
-      {/* Recent Payments Table (Only 3) */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9 }}
-        className="bg-white shadow-lg rounded-2xl p-6"
+        className="bg-white shadow-md rounded-xl p-6"
       >
         <h2 className="text-xl font-bold mb-4 text-gray-700">Recent Payments</h2>
         <div className="overflow-x-auto">

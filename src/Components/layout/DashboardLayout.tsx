@@ -33,7 +33,10 @@ const DashboardLayout = () => {
         {/* Mobile Header */}
         <div className="md:hidden flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-yellow-400">Dashboard</h2>
-          <button onClick={() => setSidebarOpen(false)} className="text-yellow-400">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-yellow-400"
+          >
             <FaTimes size={24} />
           </button>
         </div>
@@ -50,7 +53,11 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/user/dashboard/profile"
                   className={({ isActive }) =>
-                    `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
                   }
                 >
                   <FaUser className="mr-3" /> Profile
@@ -60,7 +67,11 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/user/dashboard/myOrder"
                   className={({ isActive }) =>
-                    `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
                   }
                 >
                   <FaList className="mr-3" /> My Orders
@@ -70,7 +81,11 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/user/dashboard/payment-history"
                   className={({ isActive }) =>
-                    `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
                   }
                 >
                   <FaCreditCard className="mr-3" /> Payment History
@@ -80,7 +95,11 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/user/dashboard/reviews"
                   className={({ isActive }) =>
-                    `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
                   }
                 >
                   <FaRegStar className="mr-3" /> Reviews
@@ -90,37 +109,72 @@ const DashboardLayout = () => {
           ) : (
             <>
               <li>
-                <NavLink to="/user/dashboard/profile" className={({ isActive }) =>
-                  `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-                }>
-                  <FaUser className="mr-3" /> Profile
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin/dashboard/adminProfile" className={({ isActive }) =>
-                  `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-                }>
+                <NavLink
+                  to="/admin/dashboard/adminProfile"
+                  className={({ isActive }) =>
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
+                  }
+                >
                   <FaUser className="mr-3" /> Admin Dashboard
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/dashboard/addProduct" className={({ isActive }) =>
-                  `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-                }>
+                <NavLink
+                  to="/user/dashboard/profile"
+                  className={({ isActive }) =>
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
+                  }
+                >
+                  <FaUser className="mr-3" /> Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin/dashboard/addProduct"
+                  className={({ isActive }) =>
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
+                  }
+                >
                   <FaRegStar className="mr-3" /> Add Product
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/dashboard/manage" className={({ isActive }) =>
-                  `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-                }>
+                <NavLink
+                  to="/admin/dashboard/manage"
+                  className={({ isActive }) =>
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
+                  }
+                >
                   <FaProductHunt className="mr-3" /> Manage Product
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/admin/dashboard/allOrder" className={({ isActive }) =>
-                  `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-                }>
+                <NavLink
+                  to="/admin/dashboard/allOrder"
+                  className={({ isActive }) =>
+                    `flex items-center ${
+                      isActive
+                        ? "text-yellow-400"
+                        : "text-white hover:text-yellow-400"
+                    }`
+                  }
+                >
                   <FaProductHunt className="mr-3" /> All Orders
                 </NavLink>
               </li>
@@ -134,23 +188,44 @@ const DashboardLayout = () => {
           </div>
 
           <li>
-            <NavLink to="/" className={({ isActive }) =>
-              `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-            }>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `flex items-center ${
+                  isActive
+                    ? "text-yellow-400"
+                    : "text-white hover:text-yellow-400"
+                }`
+              }
+            >
               <FaHome className="mr-3" /> Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/shop" className={({ isActive }) =>
-              `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-            }>
+            <NavLink
+              to="/shop"
+              className={({ isActive }) =>
+                `flex items-center ${
+                  isActive
+                    ? "text-yellow-400"
+                    : "text-white hover:text-yellow-400"
+                }`
+              }
+            >
               <FaShoppingBag className="mr-3" /> Shop
             </NavLink>
           </li>
           <li>
-            <NavLink to="/cart" className={({ isActive }) =>
-              `flex items-center ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`
-            }>
+            <NavLink
+              to="/cart"
+              className={({ isActive }) =>
+                `flex items-center ${
+                  isActive
+                    ? "text-yellow-400"
+                    : "text-white hover:text-yellow-400"
+                }`
+              }
+            >
               <FaCartPlus className="mr-3" /> Cart
             </NavLink>
           </li>

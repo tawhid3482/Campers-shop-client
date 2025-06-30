@@ -12,7 +12,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto ">
-        <div className="bg-white h-screen shadow-2xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-3">
+        <div className="bg-white lg:h-[500px] shadow-2xl rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-3">
           
           {/* Sidebar / Avatar */}
           <div className="bg-gradient-to-br from-[#833d47] to-green-600 text-white flex flex-col items-center justify-center p-8">

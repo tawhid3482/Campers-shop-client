@@ -42,7 +42,7 @@ const About = () => {
             before!
           </p>
           <Link to={"/shop"}>
-            <button className="bg-[#833d47] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#6d2c3a] transition">
+            <button className="bg-[#833d47] text-white p-2 rounded-lg text-lg font-semibold hover:bg-[#6d2c3a] transition">
               Shop Now
             </button>
           </Link>

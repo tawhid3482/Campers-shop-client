@@ -164,7 +164,7 @@ const Checkout = () => {
         <div className="text-center mt-6">
           <button
             onClick={handlePlaceOrder}
-            className="w-full bg-green-600 text-white py-3 rounded-md text-xl hover:bg-[#833d47] transition duration-300"
+            className="w-full bg-green-600 text-white p-2 rounded-md text-xl hover:bg-[#833d47] transition duration-300"
           >
             Place Order SSL-Commerz
           </button>
